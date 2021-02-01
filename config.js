@@ -1,4 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clearanceURL = void 0;
-exports.clearanceURL = "https://saultstemarie.ca";
+exports.certificateField_principalAddress = exports.certificateField_principalLegalTradeName = exports.certificateField_validityPeriod = exports.certificateField_clearanceCertificateNumber = exports.certificateField_naicsCodes = exports.certificateField_contractorAddress = exports.certificateField_contractorLegalTradeName = exports.certificate_tableSelector = exports.clearanceResult_certificateLinkSelector = exports.clearanceStart_searchFieldSelector = exports.clearanceStart_searchFormSelector = exports.clearanceStart_url = void 0;
+exports.clearanceStart_url = "https://onlineservices.wsib.on.ca/Clearances/eclearance/start";
+exports.clearanceStart_searchFormSelector = "#TOKENSimpleSearchForm";
+exports.clearanceStart_searchFieldSelector = "#simpleAccountNumbersTOKEN";
+exports.clearanceResult_certificateLinkSelector = "#eClearanceWorkspaceTargSubDivFormXX .fancytable a[rel='eClearanceWorkspaceContent'][href^='GCSearchCertDet']";
+exports.certificate_tableSelector = "#eClearanceWorkspaceDivForm .fancytable";
+exports.certificateField_contractorLegalTradeName = "Contractor Legal / Trade Name";
+exports.certificateField_contractorAddress = "Contractor Address";
+exports.certificateField_naicsCodes = "Contractor NAICS Code and Code Description";
+exports.certificateField_clearanceCertificateNumber = "Clearance certificate number";
+exports.certificateField_validityPeriod = "Validity period (dd-mmm-yyyy)";
+exports.certificateField_principalLegalTradeName = "Principal Legal / Trade Name";
+exports.certificateField_principalAddress = "Principal Address";

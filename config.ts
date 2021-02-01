@@ -1,2 +1,22 @@
-// export const clearanceURL = "https://onlineservices.wsib.on.ca/EClearanceWeb/eclearance/GCStart";
-export const clearanceURL = "https://saultstemarie.ca";
+// Search Form
+
+export const clearanceStart_url = "https://onlineservices.wsib.on.ca/Clearances/eclearance/start";
+
+export const clearanceStart_searchFormSelector = "#TOKENSimpleSearchForm";
+export const clearanceStart_searchFieldSelector = "#simpleAccountNumbersTOKEN";
+
+// Search Results
+
+export const clearanceResult_certificateLinkSelector = "#eClearanceWorkspaceTargSubDivFormXX .fancytable a[rel='eClearanceWorkspaceContent'][href^='GCSearchCertDet']";
+
+// Certificate
+
+export const certificate_tableSelector = "#eClearanceWorkspaceDivForm .fancytable";
+
+export const certificateField_contractorLegalTradeName = "Contractor Legal / Trade Name";
+export const certificateField_contractorAddress = "Contractor Address";
+export const certificateField_naicsCodes = "Contractor NAICS Code and Code Description";
+export const certificateField_clearanceCertificateNumber = "Clearance certificate number";
+export const certificateField_validityPeriod = "Validity period (dd-mmm-yyyy)";
+export const certificateField_principalLegalTradeName = "Principal Legal / Trade Name";
+export const certificateField_principalAddress = "Principal Address";

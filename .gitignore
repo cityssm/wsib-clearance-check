@@ -1,6 +1,2 @@
-*.db
-*.db-journal
-*.log
-
-data/config.*
+.nyc_output/
 node_modules/
