@@ -1,9 +1,13 @@
-export interface WSIBClearance_Failure {
-    success: boolean;
+interface WSIBClearance_AccountNumber {
     accountNumber: string;
-    error?: Error;
 }
-export declare type WSIBClearance_Success = WSIBClearance_Failure & WSIBClearance_Certificate;
+export declare type WSIBClearance_Failure = {
+    success: false;
+    error?: Error;
+} & WSIBClearance_AccountNumber;
+export declare type WSIBClearance_Success = {
+    success: true;
+} & WSIBClearance_AccountNumber & WSIBClearance_Certificate;
 export interface WSIBClearance_Certificate {
     contractorLegalTradeName: string;
     contractorAddress: string;
@@ -18,3 +22,4 @@ export interface NAICSCode {
     code: string;
     codeDescription: string;
 }
+export {};

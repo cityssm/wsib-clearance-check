@@ -1,10 +1,16 @@
-export interface WSIBClearance_Failure {
-  success: boolean;
+interface WSIBClearance_AccountNumber {
   accountNumber: string;
-  error?: Error;
 }
 
-export type WSIBClearance_Success = WSIBClearance_Failure & WSIBClearance_Certificate;
+export type WSIBClearance_Failure = {
+  success: false;
+  error?: Error;
+} & WSIBClearance_AccountNumber;
+
+
+export type WSIBClearance_Success = {
+  success: true;
+} & WSIBClearance_AccountNumber & WSIBClearance_Certificate;
 
 
 export interface WSIBClearance_Certificate {

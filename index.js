@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getClearanceByAccountNumber = exports.cleanRawCertificateOutput = void 0;
+exports.getClearanceByAccountNumber = void 0;
 const puppeteer = require("puppeteer");
 const htmlparser = require("htmlparser2");
 const config = require("./config");
@@ -41,7 +41,6 @@ const cleanRawCertificateOutput = (rawOutput) => {
         principalAddress
     };
 };
-exports.cleanRawCertificateOutput = cleanRawCertificateOutput;
 const getClearanceByAccountNumber = (accountNumber) => __awaiter(void 0, void 0, void 0, function* () {
     let browser;
     try {
@@ -77,7 +76,7 @@ const getClearanceByAccountNumber = (accountNumber) => __awaiter(void 0, void 0,
             });
             return parsedTable_value;
         });
-        const certificate = exports.cleanRawCertificateOutput(parsedTable);
+        const certificate = cleanRawCertificateOutput(parsedTable);
         const response = Object.assign(certificate, {
             success: true,
             accountNumber

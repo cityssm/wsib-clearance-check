@@ -21,7 +21,7 @@ const stripHTML = (rawHTMLString: string): string => {
 };
 
 
-export const cleanRawCertificateOutput = (rawOutput: {}): types.WSIBClearance_Certificate => {
+const cleanRawCertificateOutput = (rawOutput: {}): types.WSIBClearance_Certificate => {
 
   const contractorLegalTradeName = stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
   const contractorAddress = stripHTML(rawOutput[config.certificateField_contractorAddress]);
@@ -130,6 +130,4 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
       await browser.close();
     } catch (_e) { }
   }
-
-
 };

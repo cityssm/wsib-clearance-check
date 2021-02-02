@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/wsib-clearance-check",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A tool to scrape the clearance certificate status from the WSIB Online Services website.",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/cityssm/wsib-clearance-check#readme",
   "dependencies": {
     "htmlparser2": "^6.0.0",
-    "puppeteer": "^5.5.0"
+    "puppeteer": "^6.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.0",
