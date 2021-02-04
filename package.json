@@ -24,7 +24,7 @@
   "homepage": "https://github.com/cityssm/wsib-clearance-check#readme",
   "dependencies": {
     "htmlparser2": "^6.0.0",
-    "puppeteer": "^6.0.0"
+    "puppeteer": "^7.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.0",
