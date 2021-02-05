@@ -43,9 +43,10 @@ const cleanRawCertificateOutput = (rawOutput) => {
 };
 const getClearanceByAccountNumber = (accountNumber) => __awaiter(void 0, void 0, void 0, function* () {
     let browser;
+    let page;
     try {
         browser = yield puppeteer.launch();
-        const page = yield browser.newPage();
+        page = yield browser.newPage();
         const pageResponse = yield page.goto(config.clearanceStart_url, {
             referer: "https://www.wsib.ca/en"
         });
@@ -67,6 +68,7 @@ const getClearanceByAccountNumber = (accountNumber) => __awaiter(void 0, void 0,
             throw new Error("Clearance certificate link not found.");
         });
         yield page.waitForSelector("body");
+        const certificateURL = page.url();
         const parsedTable = yield page.$eval(config.certificate_tableSelector, (tableEle) => {
             const parsedTable_value = {};
             const thEles = tableEle.querySelectorAll("thead tr th");
@@ -79,15 +81,22 @@ const getClearanceByAccountNumber = (accountNumber) => __awaiter(void 0, void 0,
         const certificate = cleanRawCertificateOutput(parsedTable);
         const response = Object.assign(certificate, {
             success: true,
-            accountNumber
+            accountNumber,
+            certificateURL
         });
         return response;
     }
     catch (e) {
+        let errorURL;
+        try {
+            errorURL = page.url();
+        }
+        catch (_e) { }
         return {
             success: false,
             accountNumber,
-            error: e
+            error: e,
+            errorURL
         };
     }
     finally {

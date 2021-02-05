@@ -1,0 +1,36 @@
+image: ubuntu
+platform: Any CPU
+
+environment:
+  CODACY_PROJECT_TOKEN:
+    secure: ozM/zU/pd9et0w/s7ZNIbJGHpCd8p+5SbvlzzoAd9KbOgn93Z+9+wU1uVLe5N3HG
+  CC_TEST_REPORTER_ID:
+    secure: yze9QmuYv3Wq0rqAL8fueBj5mDzNtA+V6GDoxamXptosuID5LCNVmp1vJLstZC9CwRs4YCale/9YKSC9MAYq2telvP88cDAhSKLXGrzcHgA=
+
+stack: "node 14"
+
+install:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # install modules
+  - sh: npm ci
+  - sh: npm install -g mocha nyc
+
+before_test:
+  # Download codeclimate test report
+  - sh: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
+  - sh: chmod +x ./codeclimate-test-reporter
+
+test_script:
+  - nyc --reporter=lcov mocha --timeout 30000
+
+after_test:
+  # Send test result to codeclimate
+  - sh: ./codeclimate-test-reporter before-build
+  - sh: ./codeclimate-test-reporter after-build -t lcov --exit-code $?
+  # Send test result to Codacy
+  - sh: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
+
+# Don't actually build.
+build: off

@@ -4,12 +4,14 @@ interface WSIBClearance_AccountNumber {
 
 export type WSIBClearance_Failure = {
   success: false;
+  errorURL?: string;
   error?: Error;
 } & WSIBClearance_AccountNumber;
 
 
 export type WSIBClearance_Success = {
   success: true;
+  certificateURL: string;
 } & WSIBClearance_AccountNumber & WSIBClearance_Certificate;
 
 

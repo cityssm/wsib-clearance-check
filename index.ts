@@ -51,11 +51,12 @@ const cleanRawCertificateOutput = (rawOutput: {}): types.WSIBClearance_Certifica
 export const getClearanceByAccountNumber = async (accountNumber: string): Promise<types.WSIBClearance_Failure | types.WSIBClearance_Success> => {
 
   let browser: puppeteer.Browser;
+  let page: puppeteer.Page;
 
   try {
     browser = await puppeteer.launch();
 
-    const page = await browser.newPage();
+    page = await browser.newPage();
 
     // Load eservice
 
@@ -94,6 +95,8 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
 
     // Parse the certificate
 
+    const certificateURL = page.url();
+
     const parsedTable = await page.$eval(config.certificate_tableSelector, (tableEle: HTMLTableElement) => {
 
       const parsedTable_value = {};
@@ -112,17 +115,25 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
 
     const response = Object.assign(certificate, {
       success: true,
-      accountNumber
+      accountNumber,
+      certificateURL
     });
 
     return response;
 
   } catch (e) {
 
+    let errorURL: string;
+
+    try {
+      errorURL = page.url();
+    } catch (_e) {}
+
     return {
       success: false,
       accountNumber,
-      error: e
+      error: e,
+      errorURL
     };
 
   } finally {

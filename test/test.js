@@ -15,6 +15,7 @@ describe("getClearanceByAccountNumber", () => __awaiter(void 0, void 0, void 0, 
     it("Returns { success: true } on a valid WSIB account number", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const result = yield wsib.getClearanceByAccountNumber("9001832");
+            console.log(result);
             assert.strictEqual(result.success, true);
         }
         catch (e) {
@@ -24,6 +25,7 @@ describe("getClearanceByAccountNumber", () => __awaiter(void 0, void 0, void 0, 
     it("Returns { success: false } on an invalid WSIB account number", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const result = yield wsib.getClearanceByAccountNumber("1");
+            console.log(result);
             assert.strictEqual(result.success, false);
         }
         catch (e) {
