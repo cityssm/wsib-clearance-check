@@ -72,7 +72,7 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
 
     // Fill out form
 
-    await page.$eval(config.clearanceStart_searchFieldSelector, (inputEle: HTMLTextAreaElement, accountNumber_value) => {
+    await page.$eval(config.clearanceStart_searchFieldSelector, (inputEle: HTMLTextAreaElement, accountNumber_value: string) => {
       inputEle.value = accountNumber_value;
     }, accountNumber);
 
