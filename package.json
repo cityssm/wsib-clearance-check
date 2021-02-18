@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/wsib-clearance-check",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "A tool to scrape the clearance certificate status from the WSIB Online Services website.",
   "main": "index.js",
   "scripts": {
@@ -25,20 +25,20 @@
   "homepage": "https://github.com/cityssm/wsib-clearance-check#readme",
   "dependencies": {
     "htmlparser2": "^6.0.0",
-    "puppeteer": "^7.0.4"
+    "puppeteer": "^7.1.0"
   },
   "devDependencies": {
-    "@types/mocha": "^8.2.0",
+    "@types/mocha": "^8.2.1",
     "@types/puppeteer": "^5.4.3",
-    "@typescript-eslint/eslint-plugin": "^4.15.0",
-    "@typescript-eslint/parser": "^4.15.0",
-    "eslint": "^7.19.0",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "eslint": "^7.20.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "mocha": "^8.2.1",
-    "typescript": "^4.1.4"
+    "eslint-plugin-promise": "^4.3.1",
+    "mocha": "^8.3.0",
+    "typescript": "^4.1.5"
   },
   "nyc": {
     "all": true,
