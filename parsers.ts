@@ -1,5 +1,5 @@
 import * as htmlparser from "htmlparser2";
-
+import { getWSIBClassificationFromNAICSCode } from "./wsibClassifications";
 import type * as types from "./types";
 
 
@@ -24,10 +24,17 @@ export const parseNAICS = (rawHTMLString: string): types.NAICSCode[] => {
     const rawText = ((child as unknown as Element).children[0] as unknown as Text).data.trim();
 
     if (rawText.includes(":")) {
+
       const naicsCode: types.NAICSCode = {
         code: rawText.substring(0, rawText.indexOf(":")).trim(),
         codeDescription: rawText.substring(rawText.indexOf(":") + 1).trim()
       };
+
+      const classification = getWSIBClassificationFromNAICSCode(naicsCode.code);
+
+      if (classification) {
+        Object.assign(naicsCode, classification);
+      }
 
       naicsCodes.push(naicsCode);
     }

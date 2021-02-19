@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseValidityPeriod = exports.parseNAICS = void 0;
 const htmlparser = require("htmlparser2");
+const wsibClassifications_1 = require("./wsibClassifications");
 const parseNAICS = (rawHTMLString) => {
     const naicsCodes = [];
     const rawNode = htmlparser.parseDocument(rawHTMLString.trim());
@@ -15,6 +16,10 @@ const parseNAICS = (rawHTMLString) => {
                 code: rawText.substring(0, rawText.indexOf(":")).trim(),
                 codeDescription: rawText.substring(rawText.indexOf(":") + 1).trim()
             };
+            const classification = wsibClassifications_1.getWSIBClassificationFromNAICSCode(naicsCode.code);
+            if (classification) {
+                Object.assign(naicsCode, classification);
+            }
             naicsCodes.push(naicsCode);
         }
     }

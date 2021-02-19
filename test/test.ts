@@ -1,5 +1,6 @@
 import * as assert from "assert";
 import * as wsib from "../index";
+import { getWSIBClassificationFromNAICSCode } from "../wsibClassifications";
 
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -23,6 +24,21 @@ describe("getClearanceByAccountNumber", async () => {
       const result = await wsib.getClearanceByAccountNumber("1");
       console.log(result);
       assert.strictEqual(result.success, false);
+
+    } catch (e) {
+      assert.fail(e);
+    }
+  });
+});
+
+
+describe("getWSIBClassificationFromNAICSCode", () => {
+
+  it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", async () => {
+
+    try {
+      const result = getWSIBClassificationFromNAICSCode("622000");
+      assert.strictEqual(result.subclassName, "Hospitals");
 
     } catch (e) {
       assert.fail(e);

@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const wsib = require("../index");
+const wsibClassifications_1 = require("../wsibClassifications");
 describe("getClearanceByAccountNumber", () => __awaiter(void 0, void 0, void 0, function* () {
     it("Returns { success: true } on a valid WSIB account number", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -33,3 +34,14 @@ describe("getClearanceByAccountNumber", () => __awaiter(void 0, void 0, void 0, 
         }
     }));
 }));
+describe("getWSIBClassificationFromNAICSCode", () => {
+    it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const result = wsibClassifications_1.getWSIBClassificationFromNAICSCode("622000");
+            assert.strictEqual(result.subclassName, "Hospitals");
+        }
+        catch (e) {
+            assert.fail(e);
+        }
+    }));
+});

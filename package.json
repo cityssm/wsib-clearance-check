@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/wsib-clearance-check",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A tool to scrape the clearance certificate status from the WSIB Online Services website.",
   "main": "index.js",
   "scripts": {
@@ -44,7 +44,8 @@
     "all": true,
     "include": [
       "config.js",
-      "parsers.js"
+      "parsers.js",
+      "wsibClassifications.js"
     ]
   }
 }
