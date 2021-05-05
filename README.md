@@ -17,10 +17,10 @@ npm install @cityssm/wsib-clearance-check
 import * as wsib from "@cityssm/wsib-clearance-check";
 
 const cert = await wsib.getClearanceByAccountNumber(123);
+```
 
-console.log(cert);
-
-/*
+## Output
+```javascript
 {
   contractorLegalTradeName: 'LANDSCAPING BY EVAN',
   contractorAddress: '456 JULIA LANE, SAULT STE. MARIE, ON, P6A5X6, CA',
@@ -41,5 +41,4 @@ console.log(cert);
   accountNumber: '123',
   certificateURL: 'https://onlineservices.wsib.on.ca/EClearanceWeb/eclearance/GCSearchCertDet12345678'
 }
-*/
 ```
