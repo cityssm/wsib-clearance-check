@@ -1,34 +1,32 @@
 {
   "name": "@cityssm/wsib-clearance-check",
   "version": "2.0.0",
-  "type": "module",
   "description": "A tool to scrape the clearance certificate status from the WSIB Online Services website.",
-  "exports": "./index.js",
-  "types": "./index.d.ts",
-  "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
-  },
-  "scripts": {
-    "test": "mocha --timeout 20000",
-    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 20000"
+  "keywords": [
+    "wsib",
+    "workplace-safety-and-insurance-board",
+    "ontario",
+    "canada",
+    "clearance-certificate",
+    "web-scraping"
+  ],
+  "homepage": "https://github.com/cityssm/wsib-clearance-check#readme",
+  "bugs": {
+    "url": "https://github.com/cityssm/wsib-clearance-check/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cityssm/wsib-clearance-check.git"
   },
-  "keywords": [
-    "wsib",
-    "workplace-safety-and-insurance-board",
-    "ontario",
-    "clearance-certificate",
-    "web-scraping"
-  ],
-  "author": "The Corporation of the City of Sault Ste. Marie",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/cityssm/wsib-clearance-check/issues"
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "type": "module",
+  "exports": "./index.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "test": "mocha --timeout 20000",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 20000"
   },
-  "homepage": "https://github.com/cityssm/wsib-clearance-check#readme",
   "dependencies": {
     "htmlparser2": "^6.1.0",
     "puppeteer": "^10.1.0"
@@ -43,5 +41,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-unicorn": "^34.0.1"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   }
 }
