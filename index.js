@@ -1,19 +1,7 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getClearanceByAccountNumber = void 0;
-const puppeteer = require("puppeteer");
-const htmlparser = require("htmlparser2");
-const config = require("./config");
-const parsers = require("./parsers");
+import puppeteer from "puppeteer";
+import htmlparser from "htmlparser2";
+import * as config from "./config.js";
+import * as parsers from "./parsers.js";
 const stripHTML = (rawHTMLString) => {
     const cleanString = (rawHTMLString || "").trim();
     if (cleanString.charAt(0) === "<") {
@@ -41,41 +29,41 @@ const cleanRawCertificateOutput = (rawOutput) => {
         principalAddress
     };
 };
-const getClearanceByAccountNumber = (accountNumber) => __awaiter(void 0, void 0, void 0, function* () {
+export const getClearanceByAccountNumber = async (accountNumber) => {
     let browser;
     let page;
     try {
-        browser = yield puppeteer.launch();
-        page = yield browser.newPage();
-        const pageResponse = yield page.goto(config.clearanceStart_url, {
+        browser = await puppeteer.launch();
+        page = await browser.newPage();
+        const pageResponse = await page.goto(config.clearanceStart_url, {
             referer: "https://www.wsib.ca/en"
         });
         if (!pageResponse.ok) {
             throw new Error("Response Code = " + pageResponse.status().toString());
         }
-        yield page.waitForSelector("body");
-        yield page.$eval(config.clearanceStart_searchFieldSelector, (inputEle, accountNumber_value) => {
+        await page.waitForSelector("body");
+        await page.$eval(config.clearanceStart_searchFieldSelector, (inputEle, accountNumber_value) => {
             inputEle.value = accountNumber_value;
         }, accountNumber);
-        yield page.$eval(config.clearanceStart_searchFormSelector, (formEle) => {
+        await page.$eval(config.clearanceStart_searchFormSelector, (formEle) => {
             formEle.submit();
         });
-        yield page.waitForSelector("body");
-        yield page.$eval(config.clearanceResult_certificateLinkSelector, (linkEle) => {
+        await page.waitForSelector("body");
+        await page.$eval(config.clearanceResult_certificateLinkSelector, (linkEle) => {
             linkEle.click();
         })
             .catch(() => {
             throw new Error("Clearance certificate link not found.");
         });
-        yield page.waitForSelector("body");
+        await page.waitForSelector("body");
         const certificateURL = page.url();
-        const parsedTable = yield page.$eval(config.certificate_tableSelector, (tableEle) => {
+        const parsedTable = await page.$eval(config.certificate_tableSelector, (tableEle) => {
             const parsedTable_value = {};
             const thEles = tableEle.querySelectorAll("thead tr th");
             const tdEles = tableEle.querySelectorAll("tbody tr td");
-            thEles.forEach((thEle, index) => {
-                parsedTable_value[thEle.innerText] = tdEles[index].innerHTML;
-            });
+            for (const [index, thEle] of thEles.entries()) {
+                parsedTable_value[thEle.textContent] = tdEles[index].innerHTML;
+            }
             return parsedTable_value;
         });
         const certificate = cleanRawCertificateOutput(parsedTable);
@@ -86,24 +74,26 @@ const getClearanceByAccountNumber = (accountNumber) => __awaiter(void 0, void 0,
         });
         return response;
     }
-    catch (e) {
+    catch (error) {
         let errorURL;
         try {
             errorURL = page.url();
         }
-        catch (_e) { }
+        catch (_a) {
+        }
         return {
             success: false,
             accountNumber,
-            error: e,
+            error: error,
             errorURL
         };
     }
     finally {
         try {
-            yield browser.close();
+            await browser.close();
         }
-        catch (_e) { }
+        catch (_b) {
+        }
     }
-});
-exports.getClearanceByAccountNumber = getClearanceByAccountNumber;
+};
+export default getClearanceByAccountNumber;

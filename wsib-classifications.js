@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getWSIBClassificationFromNAICSCode = void 0;
 const wsibClasses_A = {
     className: "AGRICULTURE",
     naicsPrefixes: ["11"]
@@ -204,14 +201,14 @@ const hasNAICSCodeMatch = (naicsCode, naicsPrefixes) => {
     return false;
 };
 const naicsCodeClassificationCache = new Map();
-const getWSIBClassificationFromNAICSCode = (naicsCode) => {
+export const getWSIBClassificationFromNAICSCode = (naicsCode) => {
     if (naicsCodeClassificationCache.has(naicsCode)) {
         return naicsCodeClassificationCache.get(naicsCode);
     }
     const classKeyParts = Object.keys(wsibClasses);
     for (const classKeyPart of classKeyParts) {
         const wsibClass = wsibClasses[classKeyPart];
-        if (wsibClass.hasOwnProperty("naicsPrefixes") && hasNAICSCodeMatch(naicsCode, wsibClass.naicsPrefixes)) {
+        if (wsibClass.naicsPrefixes && hasNAICSCodeMatch(naicsCode, wsibClass.naicsPrefixes)) {
             const classification = {
                 classKey: classKeyPart,
                 className: wsibClass.className
@@ -219,7 +216,7 @@ const getWSIBClassificationFromNAICSCode = (naicsCode) => {
             naicsCodeClassificationCache.set(naicsCode, classification);
             return classification;
         }
-        if (wsibClass.hasOwnProperty("subclasses")) {
+        if (wsibClass.subclasses) {
             const subclassKeyParts = Object.keys(wsibClass.subclasses);
             for (const subclassKeyPart of subclassKeyParts) {
                 const wsibSubclass = wsibClass.subclasses[subclassKeyPart];
@@ -235,6 +232,5 @@ const getWSIBClassificationFromNAICSCode = (naicsCode) => {
             }
         }
     }
-    return null;
+    return undefined;
 };
-exports.getWSIBClassificationFromNAICSCode = getWSIBClassificationFromNAICSCode;

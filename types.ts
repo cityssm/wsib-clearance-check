@@ -13,7 +13,7 @@ export type WSIBClearance_Success = {
 
 interface WSIBClearance_AccountNumber {
   accountNumber: string;
-};
+}
 
 
 export interface WSIBClearance_Certificate {
@@ -25,7 +25,7 @@ export interface WSIBClearance_Certificate {
   validityPeriodEnd: Date;
   principalLegalTradeName: string;
   principalAddress: string;
-};
+}
 
 /*
  * Classifications
@@ -37,7 +37,7 @@ export interface NAICSCode {
   classKey?: string;
   className?: string;
   subclassName?: string;
-};
+}
 
 export interface WSIBClass {
   className: string;
@@ -45,16 +45,16 @@ export interface WSIBClass {
   subclasses?: {
     [subclassKeyPart: string]: WSIBSubclass;
   };
-};
+}
 
 export interface WSIBSubclass {
   subclassName: string;
   naicsPrefixes: string[];
-};
+}
 
 
 export interface WSIBClassification {
   classKey: string;
   className: string;
   subclassName?: string;
-};
+}

@@ -1,8 +1,8 @@
-import * as puppeteer from "puppeteer";
-import * as htmlparser from "htmlparser2";
+import puppeteer from "puppeteer";
+import htmlparser from "htmlparser2";
 
-import * as config from "./config";
-import * as parsers from "./parsers";
+import * as config from "./config.js";
+import * as parsers from "./parsers.js";
 
 import type * as types from "./types";
 
@@ -21,19 +21,19 @@ const stripHTML = (rawHTMLString: string): string => {
 };
 
 
-const cleanRawCertificateOutput = (rawOutput: {}): types.WSIBClearance_Certificate => {
+const cleanRawCertificateOutput = (rawOutput: Record<string, unknown>): types.WSIBClearance_Certificate => {
 
-  const contractorLegalTradeName = stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
-  const contractorAddress = stripHTML(rawOutput[config.certificateField_contractorAddress]);
+  const contractorLegalTradeName = stripHTML(rawOutput[config.certificateField_contractorLegalTradeName] as string);
+  const contractorAddress = stripHTML(rawOutput[config.certificateField_contractorAddress] as string);
 
-  const contractorNAICSCodes = parsers.parseNAICS(rawOutput[config.certificateField_naicsCodes]);
+  const contractorNAICSCodes = parsers.parseNAICS(rawOutput[config.certificateField_naicsCodes] as string);
 
-  const clearanceCertificateNumber = stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber]);
+  const clearanceCertificateNumber = stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber] as string);
 
-  const validityPeriod = parsers.parseValidityPeriod(rawOutput[config.certificateField_validityPeriod]);
+  const validityPeriod = parsers.parseValidityPeriod(rawOutput[config.certificateField_validityPeriod] as string);
 
-  const principalLegalTradeName = stripHTML(rawOutput[config.certificateField_principalLegalTradeName]);
-  const principalAddress = stripHTML(rawOutput[config.certificateField_principalAddress]);
+  const principalLegalTradeName = stripHTML(rawOutput[config.certificateField_principalLegalTradeName] as string);
+  const principalAddress = stripHTML(rawOutput[config.certificateField_principalAddress] as string);
 
   return {
     contractorLegalTradeName,
@@ -104,9 +104,9 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
       const thEles: NodeListOf<HTMLTableCellElement> = tableEle.querySelectorAll("thead tr th");
       const tdEles: NodeListOf<HTMLTableCellElement> = tableEle.querySelectorAll("tbody tr td");
 
-      thEles.forEach((thEle, index) => {
-        parsedTable_value[thEle.innerText] = tdEles[index].innerHTML;
-      });
+      for (const [index, thEle] of thEles.entries()) {
+        parsedTable_value[thEle.textContent] = tdEles[index].innerHTML;
+      }
 
       return parsedTable_value;
     });
@@ -121,24 +121,31 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
 
     return response;
 
-  } catch (e) {
+  } catch (error) {
 
     let errorURL: string;
 
     try {
       errorURL = page.url();
-    } catch (_e) {}
+    } catch {
+      // ignore
+    }
 
     return {
       success: false,
       accountNumber,
-      error: e,
+      error: error,
       errorURL
     };
 
   } finally {
     try {
       await browser.close();
-    } catch (_e) { }
+    } catch {
+      // ignore
+    }
   }
 };
+
+
+export default getClearanceByAccountNumber;

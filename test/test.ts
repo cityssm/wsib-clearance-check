@@ -1,6 +1,6 @@
-import * as assert from "assert";
-import * as wsib from "../index";
-import { getWSIBClassificationFromNAICSCode } from "../wsibClassifications";
+import assert from "assert";
+import * as wsib from "../index.js";
+import { getWSIBClassificationFromNAICSCode } from "../wsib-classifications.js";
 
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -13,8 +13,8 @@ describe("getClearanceByAccountNumber", async () => {
       console.log(result);
       assert.strictEqual(result.success, true);
 
-    } catch (e) {
-      assert.fail(e);
+    } catch (error) {
+      assert.fail(error);
     }
   });
 
@@ -25,8 +25,8 @@ describe("getClearanceByAccountNumber", async () => {
       console.log(result);
       assert.strictEqual(result.success, false);
 
-    } catch (e) {
-      assert.fail(e);
+    } catch (error) {
+      assert.fail(error);
     }
   });
 });
@@ -40,8 +40,8 @@ describe("getWSIBClassificationFromNAICSCode", () => {
       const result = getWSIBClassificationFromNAICSCode("622000");
       assert.strictEqual(result.subclassName, "Hospitals");
 
-    } catch (e) {
-      assert.fail(e);
+    } catch (error) {
+      assert.fail(error);
     }
   });
 });

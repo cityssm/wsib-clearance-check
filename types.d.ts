@@ -25,14 +25,13 @@ export interface NAICSCode {
     codeDescription: string;
     classKey?: string;
     className?: string;
-    subclassKey?: string;
     subclassName?: string;
 }
 export interface WSIBClass {
     className: string;
     naicsPrefixes?: string[];
     subclasses?: {
-        [subclassKey: string]: WSIBSubclass;
+        [subclassKeyPart: string]: WSIBSubclass;
     };
 }
 export interface WSIBSubclass {
@@ -42,7 +41,6 @@ export interface WSIBSubclass {
 export interface WSIBClassification {
     classKey: string;
     className: string;
-    subclassKey?: string;
     subclassName?: string;
 }
 export {};

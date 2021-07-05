@@ -1,5 +1,5 @@
-import * as htmlparser from "htmlparser2";
-import { getWSIBClassificationFromNAICSCode } from "./wsibClassifications";
+import htmlparser from "htmlparser2";
+import { getWSIBClassificationFromNAICSCode } from "./wsib-classifications.js";
 import type * as types from "./types";
 
 
@@ -26,8 +26,8 @@ export const parseNAICS = (rawHTMLString: string): types.NAICSCode[] => {
     if (rawText.includes(":")) {
 
       const naicsCode: types.NAICSCode = {
-        code: rawText.substring(0, rawText.indexOf(":")).trim(),
-        codeDescription: rawText.substring(rawText.indexOf(":") + 1).trim()
+        code: rawText.slice(0, Math.max(0, rawText.indexOf(":"))).trim(),
+        codeDescription: rawText.slice(Math.max(0, rawText.indexOf(":") + 1)).trim()
       };
 
       const classification = getWSIBClassificationFromNAICSCode(naicsCode.code);
@@ -57,9 +57,9 @@ const parseValidityPeriodDate = (rawDateString: string): Date => {
 
   const datePieces = rawDateString.split("-");
 
-  return new Date(parseInt(datePieces[2], 10),
+  return new Date(Number.parseInt(datePieces[2], 10),
     validityPeriodMonthStrings.indexOf(datePieces[1]),
-    parseInt(datePieces[0], 10));
+    Number.parseInt(datePieces[0], 10));
 };
 
 
@@ -81,7 +81,7 @@ export const parseValidityPeriod = (rawHTMLString: string): ParseValidityPeriodR
 
       const periodDate = parseValidityPeriodDate(validityPeriodPieceTrim);
 
-      if (validityPeriod.hasOwnProperty("start")) {
+      if (validityPeriod.start) {
         validityPeriod.end = periodDate;
         break;
       } else {

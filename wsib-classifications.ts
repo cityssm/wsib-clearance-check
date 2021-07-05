@@ -266,7 +266,7 @@ export const getWSIBClassificationFromNAICSCode = (naicsCode: string): types.WSI
 
     const wsibClass = wsibClasses[classKeyPart];
 
-    if (wsibClass.hasOwnProperty("naicsPrefixes") && hasNAICSCodeMatch(naicsCode, wsibClass.naicsPrefixes)) {
+    if (wsibClass.naicsPrefixes && hasNAICSCodeMatch(naicsCode, wsibClass.naicsPrefixes)) {
 
       const classification = {
         classKey: classKeyPart,
@@ -278,7 +278,7 @@ export const getWSIBClassificationFromNAICSCode = (naicsCode: string): types.WSI
       return classification;
     }
 
-    if (wsibClass.hasOwnProperty("subclasses")) {
+    if (wsibClass.subclasses) {
 
       const subclassKeyParts = Object.keys(wsibClass.subclasses);
 
@@ -302,5 +302,5 @@ export const getWSIBClassificationFromNAICSCode = (naicsCode: string): types.WSI
     }
   }
 
-  return null;
+  return undefined;
 };
