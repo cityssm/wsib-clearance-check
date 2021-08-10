@@ -29,18 +29,18 @@
   },
   "dependencies": {
     "htmlparser2": "^6.1.0",
-    "puppeteer": "^10.1.0"
+    "puppeteer": "^10.2.0"
   },
   "devDependencies": {
     "@types/mocha": "^9.0.0",
     "@types/puppeteer": "^5.4.4",
-    "@typescript-eslint/eslint-plugin": "^4.28.5",
-    "@typescript-eslint/parser": "^4.28.5",
-    "eslint": "^7.31.0",
-    "eslint-plugin-import": "^2.23.4",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-unicorn": "^34.0.1"
+    "eslint-plugin-unicorn": "^35.0.0"
   },
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
