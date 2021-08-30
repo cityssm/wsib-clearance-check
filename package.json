@@ -28,7 +28,7 @@
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 20000"
   },
   "dependencies": {
-    "htmlparser2": "^6.1.0",
+    "htmlparser2": "^7.1.1",
     "puppeteer": "^10.2.0"
   },
   "devDependencies": {
