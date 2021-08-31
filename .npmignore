@@ -12,4 +12,7 @@ test
 .gitignore
 .npmignore
 appveyor.yml
+cli.d.ts
+cli.js
+cli.ts
 tsconfig.json
