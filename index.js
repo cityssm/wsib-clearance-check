@@ -67,11 +67,11 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
             return parsedTable_value;
         });
         const certificate = cleanRawCertificateOutput(parsedTable);
-        const response = Object.assign(certificate, {
+        const response = Object.assign({
             success: true,
             accountNumber,
             certificateURL
-        });
+        }, certificate);
         return response;
     }
     catch (error) {

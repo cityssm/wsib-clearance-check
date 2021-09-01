@@ -87,9 +87,9 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
     await page.$eval(config.clearanceResult_certificateLinkSelector, (linkEle: HTMLAnchorElement) => {
       linkEle.click();
     })
-    .catch(() => {
-      throw new Error("Clearance certificate link not found.");
-    });
+      .catch(() => {
+        throw new Error("Clearance certificate link not found.");
+      });
 
     await page.waitForSelector("body");
 
@@ -113,11 +113,11 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
 
     const certificate = cleanRawCertificateOutput(parsedTable);
 
-    const response = Object.assign(certificate, {
+    const response = Object.assign({
       success: true,
       accountNumber,
       certificateURL
-    });
+    }, certificate);
 
     return response;
 
