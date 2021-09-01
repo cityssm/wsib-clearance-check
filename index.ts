@@ -115,9 +115,10 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
 
     const response = Object.assign({
       success: true,
-      accountNumber,
+      accountNumber
+    }, certificate, {
       certificateURL
-    }, certificate);
+    });
 
     return response;
 
