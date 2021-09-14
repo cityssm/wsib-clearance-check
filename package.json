@@ -28,19 +28,19 @@
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 20000"
   },
   "dependencies": {
-    "htmlparser2": "^7.1.1",
+    "htmlparser2": "^7.1.2",
     "puppeteer": "^10.2.0"
   },
   "devDependencies": {
     "@types/mocha": "^9.0.0",
     "@types/puppeteer": "^5.4.4",
-    "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "@typescript-eslint/parser": "^4.30.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-unicorn": "^35.0.0"
+    "eslint-plugin-unicorn": "^36.0.0"
   },
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
