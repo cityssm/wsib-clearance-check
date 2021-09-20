@@ -23,7 +23,7 @@ before_test:
   - sh: chmod +x ./codeclimate-test-reporter
 
 test_script:
-  - c8 --reporter=lcov mocha --timeout 30000
+  - c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 30000
 
 after_test:
   # Send test result to codeclimate

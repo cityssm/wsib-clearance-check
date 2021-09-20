@@ -2,6 +2,7 @@ import assert from "assert";
 import * as wsib from "../index.js";
 import { getWSIBClassificationFromNAICSCode } from "../wsib-classifications.js";
 describe("getClearanceByAccountNumber", async () => {
+    wsib.setHeadless(false);
     it("Returns { success: true } on a valid WSIB account number", async () => {
         try {
             const result = await wsib.getClearanceByAccountNumber("9001832");

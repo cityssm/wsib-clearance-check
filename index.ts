@@ -7,6 +7,9 @@ import * as parsers from "./parsers.js";
 import type * as types from "./types";
 
 
+let headless = true;
+
+
 const stripHTML = (rawHTMLString: string): string => {
 
   const cleanString = (rawHTMLString || "").trim();
@@ -48,17 +51,29 @@ const cleanRawCertificateOutput = (rawOutput: Record<string, unknown>): types.WS
 };
 
 
+export const setHeadless = (headlessStatus: boolean): void => {
+  headless = headlessStatus;
+};
+
+
 export const getClearanceByAccountNumber = async (accountNumber: string): Promise<types.WSIBClearance_Failure | types.WSIBClearance_Success> => {
 
   let browser: puppeteer.Browser;
   let page: puppeteer.Page;
 
   try {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({
+      headless,
+      args: ["--lang-en-CA,en"]
+    });
 
     page = await browser.newPage();
 
     // Load eservice
+
+    await page.setExtraHTTPHeaders({
+      "Accept-Language": "en"
+    });
 
     const pageResponse = await page.goto(config.clearanceStart_url, {
       referer: "https://www.wsib.ca/en"
@@ -117,8 +132,8 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
       success: true,
       accountNumber
     }, certificate, {
-      certificateURL
-    });
+        certificateURL
+      });
 
     return response;
 

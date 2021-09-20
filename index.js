@@ -2,6 +2,7 @@ import puppeteer from "puppeteer";
 import htmlparser from "htmlparser2";
 import * as config from "./config.js";
 import * as parsers from "./parsers.js";
+let headless = true;
 const stripHTML = (rawHTMLString) => {
     const cleanString = (rawHTMLString || "").trim();
     if (cleanString.charAt(0) === "<") {
@@ -29,12 +30,21 @@ const cleanRawCertificateOutput = (rawOutput) => {
         principalAddress
     };
 };
+export const setHeadless = (headlessStatus) => {
+    headless = headlessStatus;
+};
 export const getClearanceByAccountNumber = async (accountNumber) => {
     let browser;
     let page;
     try {
-        browser = await puppeteer.launch();
+        browser = await puppeteer.launch({
+            headless,
+            args: ["--lang-en-CA,en"]
+        });
         page = await browser.newPage();
+        await page.setExtraHTTPHeaders({
+            "Accept-Language": "en"
+        });
         const pageResponse = await page.goto(config.clearanceStart_url, {
             referer: "https://www.wsib.ca/en"
         });
