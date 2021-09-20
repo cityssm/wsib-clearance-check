@@ -11,8 +11,8 @@ stack: "node 14"
 
 install:
   # Test a French server
-  - sudo apt-get install language-pack-fr language-pack-fr-base manpages-fr
-  - sudo apt-get remove language-pack-en language-pack-en-base manpages
+  - sudo apt-get -y install language-pack-fr language-pack-fr-base manpages-fr
+  - sudo apt-get -y remove language-pack-en language-pack-en-base manpages
   # Output useful info for debugging.
   - node --version
   - npm --version
