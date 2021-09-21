@@ -9,6 +9,20 @@ interface ParseValidityPeriodReturn {
 }
 
 
+export const stripHTML = (rawHTMLString: string): string => {
+
+  const cleanString = (rawHTMLString || "").trim();
+
+  if (cleanString.charAt(0) === "<") {
+
+    const rawNode = htmlparser.parseDocument(cleanString);
+    return ((rawNode.firstChild as unknown as Element).children[0] as unknown as Text).data;
+  }
+
+  return cleanString;
+};
+
+
 export const parseNAICS = (rawHTMLString: string): types.NAICSCode[] => {
 
   const naicsCodes = [];

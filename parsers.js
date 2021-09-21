@@ -1,5 +1,13 @@
 import htmlparser from "htmlparser2";
 import { getWSIBClassificationFromNAICSCode } from "./wsib-classifications.js";
+export const stripHTML = (rawHTMLString) => {
+    const cleanString = (rawHTMLString || "").trim();
+    if (cleanString.charAt(0) === "<") {
+        const rawNode = htmlparser.parseDocument(cleanString);
+        return rawNode.firstChild.children[0].data;
+    }
+    return cleanString;
+};
 export const parseNAICS = (rawHTMLString) => {
     const naicsCodes = [];
     const rawNode = htmlparser.parseDocument(rawHTMLString.trim());

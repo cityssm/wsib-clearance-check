@@ -1,24 +1,18 @@
 import puppeteer from "puppeteer";
-import htmlparser from "htmlparser2";
 import * as config from "./config.js";
 import * as parsers from "./parsers.js";
 let headless = true;
-const stripHTML = (rawHTMLString) => {
-    const cleanString = (rawHTMLString || "").trim();
-    if (cleanString.charAt(0) === "<") {
-        const rawNode = htmlparser.parseDocument(cleanString);
-        return rawNode.firstChild.children[0].data;
-    }
-    return cleanString;
+export const setHeadless = (headlessStatus) => {
+    headless = headlessStatus;
 };
 const cleanRawCertificateOutput = (rawOutput) => {
-    const contractorLegalTradeName = stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
-    const contractorAddress = stripHTML(rawOutput[config.certificateField_contractorAddress]);
+    const contractorLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
+    const contractorAddress = parsers.stripHTML(rawOutput[config.certificateField_contractorAddress]);
     const contractorNAICSCodes = parsers.parseNAICS(rawOutput[config.certificateField_naicsCodes]);
-    const clearanceCertificateNumber = stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber]);
+    const clearanceCertificateNumber = parsers.stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber]);
     const validityPeriod = parsers.parseValidityPeriod(rawOutput[config.certificateField_validityPeriod]);
-    const principalLegalTradeName = stripHTML(rawOutput[config.certificateField_principalLegalTradeName]);
-    const principalAddress = stripHTML(rawOutput[config.certificateField_principalAddress]);
+    const principalLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_principalLegalTradeName]);
+    const principalAddress = parsers.stripHTML(rawOutput[config.certificateField_principalAddress]);
     return {
         contractorLegalTradeName,
         contractorAddress,
@@ -29,9 +23,6 @@ const cleanRawCertificateOutput = (rawOutput) => {
         principalLegalTradeName,
         principalAddress
     };
-};
-export const setHeadless = (headlessStatus) => {
-    headless = headlessStatus;
 };
 export const getClearanceByAccountNumber = async (accountNumber) => {
     let browser;

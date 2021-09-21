@@ -1,5 +1,4 @@
 import puppeteer from "puppeteer";
-import htmlparser from "htmlparser2";
 
 import * as config from "./config.js";
 import * as parsers from "./parsers.js";
@@ -10,33 +9,24 @@ import type * as types from "./types";
 let headless = true;
 
 
-const stripHTML = (rawHTMLString: string): string => {
-
-  const cleanString = (rawHTMLString || "").trim();
-
-  if (cleanString.charAt(0) === "<") {
-
-    const rawNode = htmlparser.parseDocument(cleanString);
-    return ((rawNode.firstChild as unknown as Element).children[0] as unknown as Text).data;
-  }
-
-  return cleanString;
+export const setHeadless = (headlessStatus: boolean): void => {
+  headless = headlessStatus;
 };
 
 
 const cleanRawCertificateOutput = (rawOutput: Record<string, unknown>): types.WSIBClearance_Certificate => {
 
-  const contractorLegalTradeName = stripHTML(rawOutput[config.certificateField_contractorLegalTradeName] as string);
-  const contractorAddress = stripHTML(rawOutput[config.certificateField_contractorAddress] as string);
+  const contractorLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_contractorLegalTradeName] as string);
+  const contractorAddress = parsers.stripHTML(rawOutput[config.certificateField_contractorAddress] as string);
 
   const contractorNAICSCodes = parsers.parseNAICS(rawOutput[config.certificateField_naicsCodes] as string);
 
-  const clearanceCertificateNumber = stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber] as string);
+  const clearanceCertificateNumber = parsers.stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber] as string);
 
   const validityPeriod = parsers.parseValidityPeriod(rawOutput[config.certificateField_validityPeriod] as string);
 
-  const principalLegalTradeName = stripHTML(rawOutput[config.certificateField_principalLegalTradeName] as string);
-  const principalAddress = stripHTML(rawOutput[config.certificateField_principalAddress] as string);
+  const principalLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_principalLegalTradeName] as string);
+  const principalAddress = parsers.stripHTML(rawOutput[config.certificateField_principalAddress] as string);
 
   return {
     contractorLegalTradeName,
@@ -48,11 +38,6 @@ const cleanRawCertificateOutput = (rawOutput: Record<string, unknown>): types.WS
     principalLegalTradeName,
     principalAddress
   };
-};
-
-
-export const setHeadless = (headlessStatus: boolean): void => {
-  headless = headlessStatus;
 };
 
 

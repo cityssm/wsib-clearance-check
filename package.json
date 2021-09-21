@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/wsib-clearance-check",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "A tool to scrape the clearance certificate status from the WSIB Online Services website.",
   "keywords": [
     "wsib",
@@ -34,8 +34,8 @@
   "devDependencies": {
     "@types/mocha": "^9.0.0",
     "@types/puppeteer": "^5.4.4",
-    "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.31.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
