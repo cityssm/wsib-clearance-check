@@ -65,11 +65,21 @@ export const cleanUpBrowserGlobal = async (useForce = false): Promise<void> => {
 
   if (browserGlobal && isBrowserGlobalExpired()) {
 
-    await browserGlobal.close();
+    try {
+      await browserGlobal.close();
+    } catch {
+      // ignore
+    }
+
     browserGlobal = undefined;
 
     if (browserGlobalTimer) {
-      clearIntervalAsync(browserGlobalTimer);
+      try {
+        clearIntervalAsync(browserGlobalTimer);
+      } catch {
+        // ignore
+      }
+      
       browserGlobalTimer = undefined;
     }
 
