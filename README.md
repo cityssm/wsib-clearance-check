@@ -27,6 +27,8 @@ const cert = await wsib.getClearanceByAccountNumber(123);
 ## Output
 ```javascript
 {
+  success: true,
+  accountNumber: '123',
   contractorLegalTradeName: 'LANDSCAPING BY EVAN',
   contractorAddress: '456 JULIA LANE, SAULT STE. MARIE, ON, P6A5X6, CA',
   contractorNAICSCodes: [
@@ -42,8 +44,6 @@ const cert = await wsib.getClearanceByAccountNumber(123);
   validityPeriodEnd: 2021-05-19T00:00:00.000Z,
   principalLegalTradeName: 'Valid for all principals',
   principalAddress: 'Not applicable',
-  success: true,
-  accountNumber: '123',
   certificateURL: 'https://onlineservices.wsib.on.ca/EClearanceWeb/eclearance/GCSearchCertDet12345678'
 }
 ```
