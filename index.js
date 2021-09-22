@@ -1,9 +1,9 @@
-import puppeteer from "puppeteer";
+import exitHook from "exit-hook";
+import * as browserGlobal from "./browser-global.js";
 import * as config from "./config.js";
 import * as parsers from "./parsers.js";
-let headless = true;
 export const setHeadless = (headlessStatus) => {
-    headless = headlessStatus;
+    browserGlobal.setHeadless(headlessStatus);
 };
 const cleanRawCertificateOutput = (rawOutput) => {
     const contractorLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
@@ -25,19 +25,18 @@ const cleanRawCertificateOutput = (rawOutput) => {
     };
 };
 export const getClearanceByAccountNumber = async (accountNumber) => {
-    let browser;
     let page;
     try {
-        browser = await puppeteer.launch({
-            headless,
-            args: ["--lang-en-CA,en"]
-        });
+        const browser = await browserGlobal.initializeBrowserGlobal();
         page = await browser.newPage();
+        page.setDefaultNavigationTimeout(browserGlobal.pageTimeoutMillis);
+        page.setDefaultTimeout(browserGlobal.pageTimeoutMillis);
         await page.setExtraHTTPHeaders({
             "Accept-Language": "en"
         });
         const pageResponse = await page.goto(config.clearanceStart_url, {
-            referer: "https://www.wsib.ca/en"
+            referer: "https://www.wsib.ca/en",
+            waitUntil: "domcontentloaded"
         });
         if (!pageResponse.ok) {
             throw new Error("Response Code = " + pageResponse.status().toString());
@@ -91,11 +90,11 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
         };
     }
     finally {
-        try {
-            await browser.close();
-        }
-        catch (_b) {
-        }
+        await page.close();
     }
 };
+export const cleanUpBrowser = async () => {
+    await browserGlobal.cleanUpBrowserGlobal(true);
+};
 export default getClearanceByAccountNumber;
+exitHook(cleanUpBrowser);

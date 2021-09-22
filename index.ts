@@ -1,16 +1,16 @@
-import puppeteer from "puppeteer";
+import exitHook from "exit-hook";
+
+import * as browserGlobal from "./browser-global.js";
 
 import * as config from "./config.js";
 import * as parsers from "./parsers.js";
 
+import type * as puppeteer from "puppeteer";
 import type * as types from "./types";
 
 
-let headless = true;
-
-
 export const setHeadless = (headlessStatus: boolean): void => {
-  headless = headlessStatus;
+  browserGlobal.setHeadless(headlessStatus);
 };
 
 
@@ -43,25 +43,27 @@ const cleanRawCertificateOutput = (rawOutput: Record<string, unknown>): types.WS
 
 export const getClearanceByAccountNumber = async (accountNumber: string): Promise<types.WSIBClearance_Failure | types.WSIBClearance_Success> => {
 
-  let browser: puppeteer.Browser;
   let page: puppeteer.Page;
 
   try {
-    browser = await puppeteer.launch({
-      headless,
-      args: ["--lang-en-CA,en"]
-    });
+    const browser = await browserGlobal.initializeBrowserGlobal();
 
     page = await browser.newPage();
 
-    // Load eservice
+    // Set up page options
+
+    page.setDefaultNavigationTimeout(browserGlobal.pageTimeoutMillis);
+    page.setDefaultTimeout(browserGlobal.pageTimeoutMillis);
 
     await page.setExtraHTTPHeaders({
       "Accept-Language": "en"
     });
 
+    // Load eservice
+
     const pageResponse = await page.goto(config.clearanceStart_url, {
-      referer: "https://www.wsib.ca/en"
+      referer: "https://www.wsib.ca/en",
+      waitUntil: "domcontentloaded"
     });
 
     if (!pageResponse.ok) {
@@ -138,15 +140,18 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
       error: error,
       errorURL
     };
-
   } finally {
-    try {
-      await browser.close();
-    } catch {
-      // ignore
-    }
+    await page.close();
   }
 };
 
 
+export const cleanUpBrowser = async (): Promise<void> => {
+  await browserGlobal.cleanUpBrowserGlobal(true);
+};
+
+
 export default getClearanceByAccountNumber;
+
+
+exitHook(cleanUpBrowser);

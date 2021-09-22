@@ -6,6 +6,10 @@ import { getWSIBClassificationFromNAICSCode } from "../wsib-classifications.js";
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 describe("getClearanceByAccountNumber", async () => {
 
+  after(() => {
+    wsib.cleanUpBrowser();
+  });
+
   it("Returns { success: true } on a valid WSIB account number", async () => {
 
     try {
