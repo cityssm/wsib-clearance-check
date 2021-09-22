@@ -1,4 +1,4 @@
-import { getClearanceByAccountNumber } from "./index.js";
+import { getClearanceByAccountNumber, cleanUpBrowser } from "./index.js";
 
 const cli = async () => {
   const accountNumbers = process.argv[2].split(",");
@@ -7,6 +7,8 @@ const cli = async () => {
     const results = await getClearanceByAccountNumber(accountNumber);
     console.log(results);
   }
+
+  await cleanUpBrowser();
 };
 
 cli();
