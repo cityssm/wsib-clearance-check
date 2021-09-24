@@ -27,7 +27,7 @@ const cleanRawCertificateOutput = (rawOutput) => {
 export const getClearanceByAccountNumber = async (accountNumber) => {
     let page;
     try {
-        const browser = await browserGlobal.initializeBrowserGlobal();
+        const browser = await browserGlobal.getBrowserGlobal();
         page = await browser.newPage();
         page.setDefaultNavigationTimeout(browserGlobal.pageTimeoutMillis);
         page.setDefaultTimeout(browserGlobal.pageTimeoutMillis);
@@ -41,6 +41,7 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
         if (!pageResponse.ok) {
             throw new Error("Response Code = " + pageResponse.status().toString());
         }
+        browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector("body");
         await page.$eval(config.clearanceStart_searchFieldSelector, (inputEle, accountNumber_value) => {
             inputEle.value = accountNumber_value;
@@ -48,13 +49,27 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
         await page.$eval(config.clearanceStart_searchFormSelector, (formEle) => {
             formEle.submit();
         });
+        browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector("body");
+        let hasError = false;
         await page.$eval(config.clearanceResult_certificateLinkSelector, (linkEle) => {
             linkEle.click();
         })
             .catch(() => {
-            throw new Error("Clearance certificate link not found.");
+            hasError = true;
         });
+        if (hasError) {
+            const errorMessage = await page.$eval(config.clearanceResult_certificateBadStandingSelector, (badStandingEle) => {
+                return badStandingEle
+                    ? badStandingEle.textContent
+                    : config.clearanceResult_defaultErrorMessage;
+            })
+                .catch(() => {
+                throw new Error(config.clearanceResult_defaultErrorMessage);
+            });
+            throw new Error(errorMessage);
+        }
+        browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector("body");
         const certificateURL = page.url();
         const parsedTable = await page.$eval(config.certificate_tableSelector, (tableEle) => {

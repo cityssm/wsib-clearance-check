@@ -2,6 +2,8 @@ export const clearanceStart_url = "https://onlineservices.wsib.on.ca/Clearances/
 export const clearanceStart_searchFormSelector = "#TOKENSimpleSearchForm";
 export const clearanceStart_searchFieldSelector = "#simpleAccountNumbersTOKEN";
 export const clearanceResult_certificateLinkSelector = "#eClearanceWorkspaceTargSubDivFormXX .fancytable a[rel='eClearanceWorkspaceContent'][href^='GCSearchCertDet']";
+export const clearanceResult_certificateBadStandingSelector = "#eClearanceWorkspaceTargSubDivFormXX .fancytable .badstanding";
+export const clearanceResult_defaultErrorMessage = "Clearance certificate link not found.";
 export const certificate_tableSelector = "#eClearanceWorkspaceDivForm .fancytable";
 export const certificateField_contractorLegalTradeName = "Contractor Legal / Trade Name";
 export const certificateField_contractorAddress = "Contractor Address";

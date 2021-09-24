@@ -21,28 +21,28 @@ export const setHeadless = (headlessStatus: boolean): void => {
 export const pageTimeoutMillis = 90_000;
 const browserStartupTimeoutMillis = 3 * 60_000;
 
-const browserGlobalExpiryMillis = browserStartupTimeoutMillis + (pageTimeoutMillis * 3);
+const browserGlobalExpiryMillis = Math.max(browserStartupTimeoutMillis, pageTimeoutMillis) + 10_000;
 
 let browserGlobal: puppeteer.Browser;
 let browserGlobalInitializedTime = 0;
 let browserGlobalTimer: SetIntervalAsyncTimer;
 
-const isBrowserGlobalExpired = () => {
+const isBrowserGlobalReady = () => {
 
-  if (browserGlobalInitializedTime + browserGlobalExpiryMillis < Date.now()) {
+  if (browserGlobal && browserGlobalInitializedTime + browserGlobalExpiryMillis > Date.now()) {
     return true;
   }
 
   return false;
 };
 
-export const initializeBrowserGlobal = async (): Promise<puppeteer.Browser> => {
+export const getBrowserGlobal = async (): Promise<puppeteer.Browser> => {
 
-  if (!browserGlobal || isBrowserGlobalExpired()) {
+  if (!isBrowserGlobalReady()) {
 
     await cleanUpBrowserGlobal();
 
-    browserGlobalInitializedTime = Date.now();
+    keepBrowserGlobalAlive();
 
     browserGlobal = await puppeteer.launch({
       headless,
@@ -50,11 +50,16 @@ export const initializeBrowserGlobal = async (): Promise<puppeteer.Browser> => {
       args: ["--lang-en-CA,en"]
     });
 
+    keepBrowserGlobalAlive();
 
     browserGlobalTimer = setIntervalAsync(cleanUpBrowserGlobal, browserGlobalExpiryMillis);
   }
 
   return browserGlobal;
+};
+
+export const keepBrowserGlobalAlive = (): void => {
+  browserGlobalInitializedTime = Date.now();
 };
 
 export const cleanUpBrowserGlobal = async (useForce = false): Promise<void> => {
@@ -63,7 +68,7 @@ export const cleanUpBrowserGlobal = async (useForce = false): Promise<void> => {
     browserGlobalInitializedTime = 0;
   }
 
-  if (browserGlobal && isBrowserGlobalExpired()) {
+  if (!isBrowserGlobalReady()) {
 
     try {
       await browserGlobal.close();
@@ -79,7 +84,7 @@ export const cleanUpBrowserGlobal = async (useForce = false): Promise<void> => {
       } catch {
         // ignore
       }
-      
+
       browserGlobalTimer = undefined;
     }
 

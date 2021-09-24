@@ -8,6 +8,8 @@ export const clearanceStart_searchFieldSelector = "#simpleAccountNumbersTOKEN";
 // Search Results
 
 export const clearanceResult_certificateLinkSelector = "#eClearanceWorkspaceTargSubDivFormXX .fancytable a[rel='eClearanceWorkspaceContent'][href^='GCSearchCertDet']";
+export const clearanceResult_certificateBadStandingSelector = "#eClearanceWorkspaceTargSubDivFormXX .fancytable .badstanding";
+export const clearanceResult_defaultErrorMessage = "Clearance certificate link not found.";
 
 // Certificate
 

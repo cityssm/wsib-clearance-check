@@ -7,34 +7,38 @@ export const setHeadless = (headlessStatus) => {
 };
 export const pageTimeoutMillis = 90000;
 const browserStartupTimeoutMillis = 3 * 60000;
-const browserGlobalExpiryMillis = browserStartupTimeoutMillis + (pageTimeoutMillis * 3);
+const browserGlobalExpiryMillis = Math.max(browserStartupTimeoutMillis, pageTimeoutMillis) + 10000;
 let browserGlobal;
 let browserGlobalInitializedTime = 0;
 let browserGlobalTimer;
-const isBrowserGlobalExpired = () => {
-    if (browserGlobalInitializedTime + browserGlobalExpiryMillis < Date.now()) {
+const isBrowserGlobalReady = () => {
+    if (browserGlobal && browserGlobalInitializedTime + browserGlobalExpiryMillis > Date.now()) {
         return true;
     }
     return false;
 };
-export const initializeBrowserGlobal = async () => {
-    if (!browserGlobal || isBrowserGlobalExpired()) {
+export const getBrowserGlobal = async () => {
+    if (!isBrowserGlobalReady()) {
         await cleanUpBrowserGlobal();
-        browserGlobalInitializedTime = Date.now();
+        keepBrowserGlobalAlive();
         browserGlobal = await puppeteer.launch({
             headless,
             timeout: browserStartupTimeoutMillis,
             args: ["--lang-en-CA,en"]
         });
+        keepBrowserGlobalAlive();
         browserGlobalTimer = setIntervalAsync(cleanUpBrowserGlobal, browserGlobalExpiryMillis);
     }
     return browserGlobal;
+};
+export const keepBrowserGlobalAlive = () => {
+    browserGlobalInitializedTime = Date.now();
 };
 export const cleanUpBrowserGlobal = async (useForce = false) => {
     if (useForce) {
         browserGlobalInitializedTime = 0;
     }
-    if (browserGlobal && isBrowserGlobalExpired()) {
+    if (!isBrowserGlobalReady()) {
         try {
             await browserGlobal.close();
         }
