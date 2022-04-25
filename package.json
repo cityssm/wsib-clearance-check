@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/wsib-clearance-check",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A tool to scrape the clearance certificate status from the WSIB Online Services website.",
   "keywords": [
     "wsib",
