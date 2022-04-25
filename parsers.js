@@ -1,4 +1,4 @@
-import htmlparser from "htmlparser2";
+import * as htmlparser from "htmlparser2";
 import { getWSIBClassificationFromNAICSCode } from "./wsib-classifications.js";
 export const stripHTML = (rawHTMLString) => {
     const cleanString = (rawHTMLString || "").trim();

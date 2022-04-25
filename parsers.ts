@@ -1,4 +1,4 @@
-import htmlparser from "htmlparser2";
+import * as htmlparser from "htmlparser2";
 import { getWSIBClassificationFromNAICSCode } from "./wsib-classifications.js";
 import type * as types from "./types";
 
