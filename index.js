@@ -9,7 +9,7 @@ const cleanRawCertificateOutput = (rawOutput) => {
     const contractorLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
     const contractorAddress = parsers.stripHTML(rawOutput[config.certificateField_contractorAddress]);
     const contractorNAICSCodes = parsers.parseNAICS(rawOutput[config.certificateField_naicsCodes]);
-    const clearanceCertificateNumber = parsers.stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber]);
+    const clearanceCertificateNumber = parsers.stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber]).split(" ")[0];
     const validityPeriod = parsers.parseValidityPeriod(rawOutput[config.certificateField_validityPeriod]);
     const principalLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_principalLegalTradeName]);
     const principalAddress = parsers.stripHTML(rawOutput[config.certificateField_principalAddress]);

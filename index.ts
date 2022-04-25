@@ -21,7 +21,8 @@ const cleanRawCertificateOutput = (rawOutput: Record<string, unknown>): types.WS
 
   const contractorNAICSCodes = parsers.parseNAICS(rawOutput[config.certificateField_naicsCodes] as string);
 
-  const clearanceCertificateNumber = parsers.stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber] as string);
+  const clearanceCertificateNumber =
+    parsers.stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber] as string).split(" ")[0];
 
   const validityPeriod = parsers.parseValidityPeriod(rawOutput[config.certificateField_validityPeriod] as string);
 
@@ -104,9 +105,9 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
           ? badStandingEle.textContent
           : config.clearanceResult_defaultErrorMessage;
       })
-      .catch(() => {
-        throw new Error(config.clearanceResult_defaultErrorMessage);
-      });
+        .catch(() => {
+          throw new Error(config.clearanceResult_defaultErrorMessage);
+        });
 
       throw new Error(errorMessage);
     }
