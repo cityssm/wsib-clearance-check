@@ -161,7 +161,11 @@ export const getClearanceByAccountNumber = async (accountNumber: string): Promis
       errorURL
     };
   } finally {
-    await page.close();
+    try {
+      await page.close();
+    } catch {
+      // ignore
+    }
   }
 };
 

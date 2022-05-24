@@ -105,7 +105,11 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
         };
     }
     finally {
-        await page.close();
+        try {
+            await page.close();
+        }
+        catch (_b) {
+        }
     }
 };
 export const cleanUpBrowser = async () => {
