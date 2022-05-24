@@ -29,17 +29,17 @@
   },
   "dependencies": {
     "exit-hook": "^3.0.0",
-    "htmlparser2": "^8.0.0",
-    "puppeteer": "^13.6.0",
+    "htmlparser2": "^8.0.1",
+    "puppeteer": "^14.1.1",
     "set-interval-async": "^2.0.3"
   },
   "devDependencies": {
     "@types/mocha": "^9.1.1",
-    "@types/puppeteer": "^5.4.5",
+    "@types/puppeteer": "^5.4.6",
     "@types/set-interval-async": "^1.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.20.0",
-    "@typescript-eslint/parser": "^5.20.0",
-    "eslint": "^8.14.0",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "eslint": "^8.16.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
