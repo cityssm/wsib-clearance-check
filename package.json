@@ -30,7 +30,7 @@
   "dependencies": {
     "exit-hook": "^3.0.0",
     "htmlparser2": "^8.0.1",
-    "puppeteer": "^14.1.1",
+    "puppeteer": "^19.1.2",
     "set-interval-async": "^2.0.3"
   },
   "devDependencies": {
