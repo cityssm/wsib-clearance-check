@@ -31,7 +31,7 @@
     "exit-hook": "^3.0.0",
     "htmlparser2": "^8.0.1",
     "puppeteer": "^14.1.1",
-    "set-interval-async": "^2.0.3"
+    "set-interval-async": "^3.0.3"
   },
   "devDependencies": {
     "@types/mocha": "^9.1.1",
