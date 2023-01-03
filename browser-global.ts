@@ -1,5 +1,5 @@
 import { setIntervalAsync } from "set-interval-async/dynamic";
-import { clearIntervalAsync, SetIntervalAsyncTimer } from "set-interval-async";
+import { clearIntervalAsync } from "set-interval-async";
 
 import puppeteer from "puppeteer";
 import type { Browser } from "puppeteer";
