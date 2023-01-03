@@ -32,9 +32,18 @@ export const parseNAICS = (rawHTMLString) => {
 };
 const validityPeriodDateRegexp = /^\d+-[A-Z][a-z]{2}-\d{4}$/;
 const validityPeriodMonthStrings = [
-    "Jan", "Feb", "Mar", "Apr",
-    "May", "Jun", "Jul", "Aug",
-    "Sep", "Oct", "Nov", "Dec"
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
 ];
 const parseValidityPeriodDate = (rawDateString) => {
     const datePieces = rawDateString.split("-");

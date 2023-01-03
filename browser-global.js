@@ -1,4 +1,4 @@
-import { setIntervalAsync } from "set-interval-async/dynamic/index.js";
+import { setIntervalAsync } from "set-interval-async/dynamic";
 import { clearIntervalAsync } from "set-interval-async";
 import puppeteer from "puppeteer";
 let headless = true;
@@ -11,13 +11,13 @@ const browserGlobalExpiryMillis = Math.max(browserStartupTimeoutMillis, pageTime
 let browserGlobal;
 let browserGlobalInitializedTime = 0;
 let browserGlobalTimer;
-const isBrowserGlobalReady = () => {
+function isBrowserGlobalReady() {
     if (browserGlobal && browserGlobalInitializedTime + browserGlobalExpiryMillis > Date.now()) {
         return true;
     }
     return false;
-};
-export const getBrowserGlobal = async () => {
+}
+export async function getBrowserGlobal() {
     if (!isBrowserGlobalReady()) {
         await cleanUpBrowserGlobal();
         keepBrowserGlobalAlive();
@@ -30,11 +30,11 @@ export const getBrowserGlobal = async () => {
         browserGlobalTimer = setIntervalAsync(cleanUpBrowserGlobal, browserGlobalExpiryMillis);
     }
     return browserGlobal;
-};
-export const keepBrowserGlobalAlive = () => {
+}
+export function keepBrowserGlobalAlive() {
     browserGlobalInitializedTime = Date.now();
-};
-export const cleanUpBrowserGlobal = async (useForce = false) => {
+}
+export async function cleanUpBrowserGlobal(useForce = false) {
     if (useForce) {
         browserGlobalInitializedTime = 0;
     }
@@ -55,4 +55,4 @@ export const cleanUpBrowserGlobal = async (useForce = false) => {
         }
         browserGlobalInitializedTime = 0;
     }
-};
+}

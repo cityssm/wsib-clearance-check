@@ -9,7 +9,9 @@ const cleanRawCertificateOutput = (rawOutput) => {
     const contractorLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
     const contractorAddress = parsers.stripHTML(rawOutput[config.certificateField_contractorAddress]);
     const contractorNAICSCodes = parsers.parseNAICS(rawOutput[config.certificateField_naicsCodes]);
-    const clearanceCertificateNumber = parsers.stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber]).split(" ")[0];
+    const clearanceCertificateNumber = parsers
+        .stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber])
+        .split(" ")[0];
     const validityPeriod = parsers.parseValidityPeriod(rawOutput[config.certificateField_validityPeriod]);
     const principalLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_principalLegalTradeName]);
     const principalAddress = parsers.stripHTML(rawOutput[config.certificateField_principalAddress]);
@@ -52,14 +54,16 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector("body");
         let hasError = false;
-        await page.$eval(config.clearanceResult_certificateLinkSelector, (linkEle) => {
+        await page
+            .$eval(config.clearanceResult_certificateLinkSelector, (linkEle) => {
             linkEle.click();
         })
             .catch(() => {
             hasError = true;
         });
         if (hasError) {
-            const errorMessage = await page.$eval(config.clearanceResult_certificateBadStandingSelector, (badStandingEle) => {
+            const errorMessage = await page
+                .$eval(config.clearanceResult_certificateBadStandingSelector, (badStandingEle) => {
                 return badStandingEle
                     ? badStandingEle.textContent
                     : config.clearanceResult_defaultErrorMessage;

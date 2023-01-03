@@ -6,7 +6,7 @@ describe("getClearanceByAccountNumber(validAccountNumber)", () => {
     const accountNumber = "9001832";
     before(async () => {
         try {
-            certificate = await wsib.getClearanceByAccountNumber(accountNumber);
+            certificate = (await wsib.getClearanceByAccountNumber(accountNumber));
             console.log(certificate);
         }
         catch (error) {
@@ -36,7 +36,7 @@ describe("getClearanceByAccountNumber(invalidAccountNumber)", async () => {
     let certificate;
     before(async () => {
         try {
-            certificate = await wsib.getClearanceByAccountNumber("1");
+            certificate = (await wsib.getClearanceByAccountNumber("1"));
             console.log(certificate);
         }
         catch (error) {
