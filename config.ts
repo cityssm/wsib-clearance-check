@@ -1,6 +1,6 @@
 // Search Form
 
-export const clearanceStart_url = "https://onlineservices.wsib.on.ca/Clearances/eclearance/start";
+export const clearanceStart_url = "https://clearances.wsib.ca/Clearances/eclearance/start";
 
 export const clearanceStart_searchFormSelector = "#TOKENSimpleSearchForm";
 export const clearanceStart_searchFieldSelector = "#simpleAccountNumbersTOKEN";

@@ -1,4 +1,4 @@
-export declare const clearanceStart_url = "https://onlineservices.wsib.on.ca/Clearances/eclearance/start";
+export declare const clearanceStart_url = "https://clearances.wsib.ca/Clearances/eclearance/start";
 export declare const clearanceStart_searchFormSelector = "#TOKENSimpleSearchForm";
 export declare const clearanceStart_searchFieldSelector = "#simpleAccountNumbersTOKEN";
 export declare const clearanceResult_certificateLinkSelector = "#eClearanceWorkspaceTargSubDivFormXX .fancytable a[rel='eClearanceWorkspaceContent'][href^='GCSearchCertDet']";
