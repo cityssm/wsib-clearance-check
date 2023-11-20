@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.4",
-    "@types/puppeteer": "^5.4.7",
+    "@types/puppeteer": "^7.0.4",
     "@types/set-interval-async": "^1.0.3",
     "eslint": "^8.54.0",
     "eslint-config-cityssm": "^1.0.0"
