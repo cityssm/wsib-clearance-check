@@ -1,17 +1,17 @@
-import exitHook from "exit-hook";
-import * as browserGlobal from "./browser-global.js";
-import * as config from "./config.js";
-import * as parsers from "./parsers.js";
-export const setHeadless = (headlessStatus) => {
+import exitHook from 'exit-hook';
+import * as browserGlobal from './browserGlobal.js';
+import * as config from './config.js';
+import * as parsers from './parsers.js';
+export function setHeadless(headlessStatus) {
     browserGlobal.setHeadless(headlessStatus);
-};
-const cleanRawCertificateOutput = (rawOutput) => {
+}
+function cleanRawCertificateOutput(rawOutput) {
     const contractorLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
     const contractorAddress = parsers.stripHTML(rawOutput[config.certificateField_contractorAddress]);
     const contractorNAICSCodes = parsers.parseNAICS(rawOutput[config.certificateField_naicsCodes]);
     const clearanceCertificateNumber = parsers
         .stripHTML(rawOutput[config.certificateField_clearanceCertificateNumber])
-        .split(" ")[0];
+        .split(' ')[0];
     const validityPeriod = parsers.parseValidityPeriod(rawOutput[config.certificateField_validityPeriod]);
     const principalLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_principalLegalTradeName]);
     const principalAddress = parsers.stripHTML(rawOutput[config.certificateField_principalAddress]);
@@ -25,8 +25,8 @@ const cleanRawCertificateOutput = (rawOutput) => {
         principalLegalTradeName,
         principalAddress
     };
-};
-export const getClearanceByAccountNumber = async (accountNumber) => {
+}
+export async function getClearanceByAccountNumber(accountNumber) {
     let page;
     try {
         const browser = await browserGlobal.getBrowserGlobal();
@@ -34,38 +34,38 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
         page.setDefaultNavigationTimeout(browserGlobal.pageTimeoutMillis);
         page.setDefaultTimeout(browserGlobal.pageTimeoutMillis);
         await page.setExtraHTTPHeaders({
-            "Accept-Language": "en"
+            'Accept-Language': 'en'
         });
         const pageResponse = await page.goto(config.clearanceStart_url, {
-            referer: "https://www.wsib.ca/en",
-            waitUntil: "domcontentloaded"
+            referer: 'https://www.wsib.ca/en',
+            waitUntil: 'domcontentloaded'
         });
         if (!pageResponse.ok) {
-            throw new Error("Response Code = " + pageResponse.status().toString());
+            throw new Error('Response Code = ' + pageResponse.status().toString());
         }
         browserGlobal.keepBrowserGlobalAlive();
-        await page.waitForSelector("body");
-        await page.$eval(config.clearanceStart_searchFieldSelector, (inputEle, accountNumber_value) => {
-            inputEle.value = accountNumber_value;
+        await page.waitForSelector('body');
+        await page.$eval(config.clearanceStart_searchFieldSelector, (inputElement, accountNumberValue) => {
+            inputElement.value = accountNumberValue;
         }, accountNumber);
-        await page.$eval(config.clearanceStart_searchFormSelector, (formEle) => {
-            formEle.submit();
+        await page.$eval(config.clearanceStart_searchFormSelector, (formElement) => {
+            formElement.submit();
         });
         browserGlobal.keepBrowserGlobalAlive();
-        await page.waitForSelector("body");
+        await page.waitForSelector('body');
         let hasError = false;
         await page
-            .$eval(config.clearanceResult_certificateLinkSelector, (linkEle) => {
-            linkEle.click();
+            .$eval(config.clearanceResult_certificateLinkSelector, (linkElement) => {
+            linkElement.click();
         })
             .catch(() => {
             hasError = true;
         });
         if (hasError) {
             const errorMessage = await page
-                .$eval(config.clearanceResult_certificateBadStandingSelector, (badStandingEle) => {
-                return badStandingEle
-                    ? badStandingEle.textContent
+                .$eval(config.clearanceResult_certificateBadStandingSelector, (badStandingElement) => {
+                return badStandingElement
+                    ? badStandingElement.textContent
                     : config.clearanceResult_defaultErrorMessage;
             })
                 .catch(() => {
@@ -74,14 +74,14 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
             throw new Error(errorMessage);
         }
         browserGlobal.keepBrowserGlobalAlive();
-        await page.waitForSelector("body");
+        await page.waitForSelector('body');
         const certificateURL = page.url();
-        const parsedTable = await page.$eval(config.certificate_tableSelector, (tableEle) => {
+        const parsedTable = await page.$eval(config.certificate_tableSelector, (tableElement) => {
             const parsedTable_value = {};
-            const thEles = tableEle.querySelectorAll("thead tr th");
-            const tdEles = tableEle.querySelectorAll("tbody tr td");
-            for (const [index, thEle] of thEles.entries()) {
-                parsedTable_value[thEle.textContent] = tdEles[index].innerHTML;
+            const thElements = tableElement.querySelectorAll('thead tr th');
+            const tdElements = tableElement.querySelectorAll('tbody tr td');
+            for (const [index, thElement] of thElements.entries()) {
+                parsedTable_value[thElement.textContent] = tdElements[index].innerHTML;
             }
             return parsedTable_value;
         });
@@ -99,7 +99,7 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
         try {
             errorURL = page.url();
         }
-        catch (_a) {
+        catch {
         }
         return {
             success: false,
@@ -112,12 +112,12 @@ export const getClearanceByAccountNumber = async (accountNumber) => {
         try {
             await page.close();
         }
-        catch (_b) {
+        catch {
         }
     }
-};
-export const cleanUpBrowser = async () => {
+}
+export async function cleanUpBrowser() {
     await browserGlobal.cleanUpBrowserGlobal(true);
-};
+}
 export default getClearanceByAccountNumber;
 exitHook(cleanUpBrowser);

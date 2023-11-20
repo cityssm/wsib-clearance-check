@@ -5,7 +5,6 @@
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/cityssm/wsib-clearance-check)](https://codeclimate.com/github/cityssm/wsib-clearance-check)
 [![Code Climate coverage](https://img.shields.io/codeclimate/coverage/cityssm/wsib-clearance-check)](https://codeclimate.com/github/cityssm/wsib-clearance-check)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cityssm/wsib-clearance-check/coverage.yml)](https://github.com/cityssm/wsib-clearance-check/actions/workflows/coverage.yml)
-[![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/wsib-clearance-check)](https://app.snyk.io/org/cityssm/project/18c6a1c4-1d7a-4161-85e4-003bfe84a57f)
 
 A tool to scrape the clearance certificate status from the
 [WSIB Online Services Clearance Certificate Website](https://onlineservices.wsib.on.ca/EClearanceWeb/eclearance/start).

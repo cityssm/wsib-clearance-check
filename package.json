@@ -1,46 +1,46 @@
 {
-    "name": "@cityssm/wsib-clearance-check",
-    "version": "3.0.5",
-    "description": "A tool to scrape the clearance certificate status from the WSIB Online Services website.",
-    "keywords": [
-        "wsib",
-        "workplace-safety-and-insurance-board",
-        "ontario",
-        "canada",
-        "clearance-certificate",
-        "web-scraping"
-    ],
-    "homepage": "https://github.com/cityssm/wsib-clearance-check#readme",
-    "bugs": {
-        "url": "https://github.com/cityssm/wsib-clearance-check/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/cityssm/wsib-clearance-check.git"
-    },
-    "license": "MIT",
-    "author": "The Corporation of the City of Sault Ste. Marie",
-    "type": "module",
-    "exports": "./index.js",
-    "types": "./index.d.ts",
-    "scripts": {
-        "test": "mocha --timeout 20000",
-        "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 20000"
-    },
-    "dependencies": {
-        "exit-hook": "^4.0.0",
-        "htmlparser2": "^9.0.0",
-        "puppeteer": "^21.5.2",
-        "set-interval-async": "^3.0.3"
-    },
-    "devDependencies": {
-        "@types/mocha": "^10.0.4",
-        "@types/puppeteer": "^5.4.7",
-        "@types/set-interval-async": "^1.0.3",
-        "eslint": "^8.54.0",
-        "eslint-config-cityssm": "^1.0.0"
-    },
-    "engines": {
-        "node": ">=18.0.0"
-    }
+  "name": "@cityssm/wsib-clearance-check",
+  "version": "3.0.5",
+  "description": "A tool to scrape the clearance certificate status from the WSIB Online Services website.",
+  "keywords": [
+    "wsib",
+    "workplace-safety-and-insurance-board",
+    "ontario",
+    "canada",
+    "clearance-certificate",
+    "web-scraping"
+  ],
+  "homepage": "https://github.com/cityssm/wsib-clearance-check#readme",
+  "bugs": {
+    "url": "https://github.com/cityssm/wsib-clearance-check/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityssm/wsib-clearance-check.git"
+  },
+  "license": "MIT",
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "type": "module",
+  "exports": "./index.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "test": "mocha --timeout 20000",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 20000"
+  },
+  "dependencies": {
+    "exit-hook": "^4.0.0",
+    "htmlparser2": "^9.0.0",
+    "puppeteer": "^21.5.2",
+    "set-interval-async": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.4",
+    "@types/puppeteer": "^5.4.7",
+    "@types/set-interval-async": "^1.0.3",
+    "eslint": "^8.54.0",
+    "eslint-config-cityssm": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

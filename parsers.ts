@@ -1,104 +1,113 @@
-import * as htmlparser from "htmlparser2";
-import { getWSIBClassificationFromNAICSCode } from "./wsib-classifications.js";
-import type * as types from "./types";
+import { parseDocument } from 'htmlparser2'
+
+import type { NAICSCode } from './types.js'
+import { getWSIBClassificationFromNAICSCode } from './wsibClassifications.js'
 
 interface ParseValidityPeriodReturn {
-    start?: Date;
-    end?: Date;
+  start?: Date
+  end?: Date
 }
 
 export const stripHTML = (rawHTMLString: string): string => {
-    const cleanString = (rawHTMLString || "").trim();
+  const cleanString = (rawHTMLString ?? '').trim()
 
-    if (cleanString.charAt(0) === "<") {
-        const rawNode = htmlparser.parseDocument(cleanString);
-        return ((rawNode.firstChild as unknown as Element).children[0] as unknown as Text).data;
+  if (cleanString.charAt(0) === '<') {
+    const rawNode = parseDocument(cleanString)
+    return (
+      (rawNode.firstChild as unknown as Element).children[0] as unknown as Text
+    ).data
+  }
+
+  return cleanString
+}
+
+export const parseNAICS = (rawHTMLString: string): NAICSCode[] => {
+  const naicsCodes: NAICSCode[] = []
+
+  const rawNode = parseDocument(rawHTMLString.trim())
+
+  for (const child of rawNode.childNodes) {
+    if (child.type !== 'tag') {
+      continue
     }
 
-    return cleanString;
-};
+    const rawText = (
+      (child as unknown as Element).children[0] as unknown as Text
+    ).data.trim()
 
-export const parseNAICS = (rawHTMLString: string): types.NAICSCode[] => {
-    const naicsCodes = [];
+    if (rawText.includes(':')) {
+      const naicsCode: NAICSCode = {
+        code: rawText.slice(0, Math.max(0, rawText.indexOf(':'))).trim(),
+        codeDescription: rawText
+          .slice(Math.max(0, rawText.indexOf(':') + 1))
+          .trim()
+      }
 
-    const rawNode = htmlparser.parseDocument(rawHTMLString.trim());
+      const classification = getWSIBClassificationFromNAICSCode(naicsCode.code)
 
-    for (const child of rawNode.childNodes) {
-        if (child.type !== "tag") {
-            continue;
-        }
+      if (classification) {
+        Object.assign(naicsCode, classification)
+      }
 
-        const rawText = ((child as unknown as Element).children[0] as unknown as Text).data.trim();
-
-        if (rawText.includes(":")) {
-            const naicsCode: types.NAICSCode = {
-                code: rawText.slice(0, Math.max(0, rawText.indexOf(":"))).trim(),
-                codeDescription: rawText.slice(Math.max(0, rawText.indexOf(":") + 1)).trim()
-            };
-
-            const classification = getWSIBClassificationFromNAICSCode(naicsCode.code);
-
-            if (classification) {
-                Object.assign(naicsCode, classification);
-            }
-
-            naicsCodes.push(naicsCode);
-        }
+      naicsCodes.push(naicsCode)
     }
+  }
 
-    return naicsCodes;
-};
+  return naicsCodes
+}
 
-const validityPeriodDateRegexp = /^\d+-[A-Z][a-z]{2}-\d{4}$/;
+const validityPeriodDateRegexp = /^\d+-[A-Z][a-z]{2}-\d{4}$/
 
 const validityPeriodMonthStrings = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-];
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+]
 
 const parseValidityPeriodDate = (rawDateString: string): Date => {
-    const datePieces = rawDateString.split("-");
+  const datePieces = rawDateString.split('-')
 
-    return new Date(
-        Number.parseInt(datePieces[2], 10),
-        validityPeriodMonthStrings.indexOf(datePieces[1]),
-        Number.parseInt(datePieces[0], 10)
-    );
-};
+  return new Date(
+    Number.parseInt(datePieces[2], 10),
+    validityPeriodMonthStrings.indexOf(datePieces[1]),
+    Number.parseInt(datePieces[0], 10)
+  )
+}
 
-export const parseValidityPeriod = (rawHTMLString: string): ParseValidityPeriodReturn => {
-    const validityPeriod: ParseValidityPeriodReturn = {};
+export const parseValidityPeriod = (
+  rawHTMLString: string
+): ParseValidityPeriodReturn => {
+  const validityPeriod: ParseValidityPeriodReturn = {}
 
-    const validityPeriodSplit = rawHTMLString.split(" ");
+  const validityPeriodSplit = rawHTMLString.split(' ')
 
-    for (const validityPeriodPiece of validityPeriodSplit) {
-        const validityPeriodPieceTrim = validityPeriodPiece.trim();
+  for (const validityPeriodPiece of validityPeriodSplit) {
+    const validityPeriodPieceTrim = validityPeriodPiece.trim()
 
-        if (validityPeriodPieceTrim === "") {
-            continue;
-        }
-
-        if (validityPeriodDateRegexp.test(validityPeriodPieceTrim)) {
-            const periodDate = parseValidityPeriodDate(validityPeriodPieceTrim);
-
-            if (validityPeriod.start) {
-                validityPeriod.end = periodDate;
-                break;
-            } else {
-                validityPeriod.start = periodDate;
-            }
-        }
+    if (validityPeriodPieceTrim === '') {
+      continue
     }
 
-    return validityPeriod;
-};
+    if (validityPeriodDateRegexp.test(validityPeriodPieceTrim)) {
+      const periodDate = parseValidityPeriodDate(validityPeriodPieceTrim)
+
+      if (validityPeriod.start) {
+        validityPeriod.end = periodDate
+        break
+      } else {
+        validityPeriod.start = periodDate
+      }
+    }
+  }
+
+  return validityPeriod
+}

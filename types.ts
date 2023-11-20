@@ -1,28 +1,31 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/indent */
+
 export type WSIBClearance_Failure = {
-    success: false;
-    errorURL?: string;
-    error?: Error;
-} & WSIBClearance_AccountNumber;
+  success: false
+  errorURL?: string
+  error?: Error
+} & WSIBClearance_AccountNumber
 
 export type WSIBClearance_Success = {
-    success: true;
-    certificateURL: string;
+  success: true
+  certificateURL: string
 } & WSIBClearance_AccountNumber &
-    WSIBClearance_Certificate;
+  WSIBClearance_Certificate
 
 interface WSIBClearance_AccountNumber {
-    accountNumber: string;
+  accountNumber: string
 }
 
 export interface WSIBClearance_Certificate {
-    contractorLegalTradeName: string;
-    contractorAddress: string;
-    contractorNAICSCodes: NAICSCode[];
-    clearanceCertificateNumber: string;
-    validityPeriodStart: Date;
-    validityPeriodEnd: Date;
-    principalLegalTradeName: string;
-    principalAddress: string;
+  contractorLegalTradeName: string
+  contractorAddress: string
+  contractorNAICSCodes: NAICSCode[]
+  clearanceCertificateNumber: string
+  validityPeriodStart: Date
+  validityPeriodEnd: Date
+  principalLegalTradeName: string
+  principalAddress: string
 }
 
 /*
@@ -30,28 +33,26 @@ export interface WSIBClearance_Certificate {
  */
 
 export interface NAICSCode {
-    code: string;
-    codeDescription: string;
-    classKey?: string;
-    className?: string;
-    subclassName?: string;
+  code: string
+  codeDescription: string
+  classKey?: string
+  className?: string
+  subclassName?: string
 }
 
 export interface WSIBClass {
-    className: string;
-    naicsPrefixes?: string[];
-    subclasses?: {
-        [subclassKeyPart: string]: WSIBSubclass;
-    };
+  className: string
+  naicsPrefixes?: string[]
+  subclasses?: Record<string, WSIBSubclass>
 }
 
 export interface WSIBSubclass {
-    subclassName: string;
-    naicsPrefixes: string[];
+  subclassName: string
+  naicsPrefixes: string[]
 }
 
 export interface WSIBClassification {
-    classKey: string;
-    className: string;
-    subclassName?: string;
+  classKey: string
+  className: string
+  subclassName?: string
 }
