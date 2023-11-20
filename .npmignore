@@ -11,6 +11,8 @@ test
 .eslintrc.json
 .gitignore
 .npmignore
+.prettierignore
+.prettierrc.json
 appveyor.yml
 cli.d.ts
 cli.js
