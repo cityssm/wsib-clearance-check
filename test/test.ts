@@ -45,8 +45,7 @@ describe('getClearanceByAccountNumber(validAccountNumber)', () => {
   })
 })
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => {
+describe('getClearanceByAccountNumber(invalidAccountNumber)', () => {
   let certificate: WSIBClearance_Failure
 
   before(async () => {
@@ -71,7 +70,7 @@ describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => {
 })
 
 describe('getWSIBClassificationFromNAICSCode', () => {
-  it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", async () => {
+  it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", () => {
     try {
       const result = getWSIBClassificationFromNAICSCode('622000')
       assert.strictEqual(result?.subclassName, 'Hospitals')

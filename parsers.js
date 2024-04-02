@@ -2,7 +2,7 @@ import { parseDocument } from 'htmlparser2';
 import { getWSIBClassificationFromNAICSCode } from './wsibClassifications.js';
 export const stripHTML = (rawHTMLString) => {
     const cleanString = (rawHTMLString ?? '').trim();
-    if (cleanString.charAt(0) === '<') {
+    if (cleanString.startsWith('<')) {
         const rawNode = parseDocument(cleanString);
         return rawNode.firstChild.children[0].data;
     }

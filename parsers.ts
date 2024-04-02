@@ -11,7 +11,7 @@ interface ParseValidityPeriodReturn {
 export const stripHTML = (rawHTMLString: string): string => {
   const cleanString = (rawHTMLString ?? '').trim()
 
-  if (cleanString.charAt(0) === '<') {
+  if (cleanString.startsWith('<')) {
     const rawNode = parseDocument(cleanString)
     return (
       (rawNode.firstChild as unknown as Element).children[0] as unknown as Text

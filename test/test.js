@@ -33,7 +33,7 @@ describe('getClearanceByAccountNumber(validAccountNumber)', () => {
         assert.strictEqual(certificate.validityPeriodEnd.constructor, Date);
     });
 });
-describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => {
+describe('getClearanceByAccountNumber(invalidAccountNumber)', () => {
     let certificate;
     before(async () => {
         try {
@@ -53,7 +53,7 @@ describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => {
     });
 });
 describe('getWSIBClassificationFromNAICSCode', () => {
-    it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", async () => {
+    it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", () => {
         try {
             const result = getWSIBClassificationFromNAICSCode('622000');
             assert.strictEqual(result?.subclassName, 'Hospitals');
