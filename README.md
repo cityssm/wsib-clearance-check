@@ -1,9 +1,10 @@
-# wsib-clearance-check
+# WSIB Clearance Check
 
 [![npm (scoped)](https://img.shields.io/npm/v/@cityssm/wsib-clearance-check)](https://www.npmjs.com/package/@cityssm/wsib-clearance-check)
+[![DeepSource](https://app.deepsource.com/gh/cityssm/wsib-clearance-check.svg/?label=active+issues&show_trend=true&token=8Wg_seH68YGf4tZKozKTme7b)](https://app.deepsource.com/gh/cityssm/wsib-clearance-check/)
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/cityssm/wsib-clearance-check)](https://codeclimate.com/github/cityssm/wsib-clearance-check)
-[![Code Climate coverage](https://img.shields.io/codeclimate/coverage/cityssm/wsib-clearance-check)](https://codeclimate.com/github/cityssm/wsib-clearance-check)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cityssm/wsib-clearance-check/coverage.yml)](https://github.com/cityssm/wsib-clearance-check/actions/workflows/coverage.yml)
+[![codecov](https://codecov.io/gh/cityssm/wsib-clearance-check/graph/badge.svg?token=ADZDRCPX33)](https://codecov.io/gh/cityssm/wsib-clearance-check)
+[![Coverage Testing](https://github.com/cityssm/wsib-clearance-check/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/wsib-clearance-check/actions/workflows/coverage.yml)
 
 A tool to scrape the clearance certificate status from the
 [WSIB Online Services Clearance Certificate Website](https://onlineservices.wsib.on.ca/EClearanceWeb/eclearance/start).
