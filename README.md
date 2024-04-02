@@ -18,12 +18,13 @@ npm install @cityssm/wsib-clearance-check
 ## Usage
 
 ```javascript
-import * as wsib from "@cityssm/wsib-clearance-check";
+import * as wsib from '@cityssm/wsib-clearance-check'
 
-const cert = await wsib.getClearanceByAccountNumber(123);
+const cert = await wsib.getClearanceByAccountNumber(123)
 ```
 
 ## Output
+
 ```javascript
 {
   success: true,
