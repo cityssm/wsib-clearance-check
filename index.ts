@@ -176,7 +176,7 @@ export async function getClearanceByAccountNumber(
       }
     )
   } catch (error) {
-    let errorURL: string = ''
+    let errorURL = ''
 
     try {
       errorURL = page?.url() ?? ''
