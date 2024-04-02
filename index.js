@@ -1,10 +1,6 @@
-import exitHook from 'exit-hook';
 import * as browserGlobal from './browserGlobal.js';
 import * as config from './config.js';
 import * as parsers from './parsers.js';
-export function setHeadless(headlessStatus) {
-    browserGlobal.setHeadless(headlessStatus);
-}
 function cleanRawCertificateOutput(rawOutput) {
     const contractorLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
     const contractorAddress = parsers.stripHTML(rawOutput[config.certificateField_contractorAddress]);
@@ -40,8 +36,8 @@ export async function getClearanceByAccountNumber(accountNumber) {
             referer: 'https://www.wsib.ca/en',
             waitUntil: 'domcontentloaded'
         });
-        if (!pageResponse.ok) {
-            throw new Error('Response Code = ' + pageResponse.status().toString());
+        if (!(pageResponse?.ok() ?? false)) {
+            throw new Error(`Response Code = ${pageResponse?.status().toString()}`);
         }
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector('body');
@@ -71,46 +67,48 @@ export async function getClearanceByAccountNumber(accountNumber) {
                 .catch(() => {
                 throw new Error(config.clearanceResult_defaultErrorMessage);
             });
-            throw new Error(errorMessage);
+            throw new Error(errorMessage ?? '');
         }
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector('body');
         const certificateURL = page.url();
         const parsedTable = await page.$eval(config.certificate_tableSelector, (tableElement) => {
-            const parsedTable_value = {};
+            const parsedTableValue = {};
             const thElements = tableElement.querySelectorAll('thead tr th');
             const tdElements = tableElement.querySelectorAll('tbody tr td');
             for (const [index, thElement] of thElements.entries()) {
-                parsedTable_value[thElement.textContent] = tdElements[index].innerHTML;
+                parsedTableValue[thElement.textContent ?? ''] =
+                    tdElements[index].innerHTML;
             }
-            return parsedTable_value;
+            return parsedTableValue;
         });
         const certificate = cleanRawCertificateOutput(parsedTable);
-        const response = Object.assign({
+        return Object.assign({
             success: true,
             accountNumber
         }, certificate, {
             certificateURL
         });
-        return response;
     }
     catch (error) {
-        let errorURL;
+        let errorURL = '';
         try {
-            errorURL = page.url();
+            errorURL = page?.url() ?? '';
         }
         catch {
         }
         return {
             success: false,
             accountNumber,
-            error: error,
+            error,
             errorURL
         };
     }
     finally {
         try {
-            await page.close();
+            if (page !== undefined) {
+                await page.close();
+            }
         }
         catch {
         }
@@ -120,4 +118,3 @@ export async function cleanUpBrowser() {
     await browserGlobal.cleanUpBrowserGlobal(true);
 }
 export default getClearanceByAccountNumber;
-exitHook(cleanUpBrowser);

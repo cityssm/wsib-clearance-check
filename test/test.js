@@ -10,7 +10,8 @@ describe('getClearanceByAccountNumber(validAccountNumber)', () => {
             console.log(certificate);
         }
         catch (error) {
-            assert.fail(error);
+            console.log(error);
+            assert.fail();
         }
     });
     after(async () => {
@@ -40,7 +41,8 @@ describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => {
             console.log(certificate);
         }
         catch (error) {
-            assert.fail(error);
+            console.log(error);
+            assert.fail();
         }
     });
     after(async () => {
@@ -54,10 +56,11 @@ describe('getWSIBClassificationFromNAICSCode', () => {
     it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", async () => {
         try {
             const result = getWSIBClassificationFromNAICSCode('622000');
-            assert.strictEqual(result.subclassName, 'Hospitals');
+            assert.strictEqual(result?.subclassName, 'Hospitals');
         }
         catch (error) {
-            assert.fail(error);
+            console.log(error);
+            assert.fail();
         }
     });
 });

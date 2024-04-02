@@ -1,10 +1,10 @@
-import { getClearanceByAccountNumber, cleanUpBrowser } from './index.js';
-const cli = async () => {
+import { cleanUpBrowser, getClearanceByAccountNumber } from './index.js';
+async function cli() {
     const accountNumbers = process.argv[2].split(',');
     for (const accountNumber of accountNumbers) {
         const results = await getClearanceByAccountNumber(accountNumber);
         console.log(results);
     }
     await cleanUpBrowser();
-};
-cli();
+}
+await cli();

@@ -1,18 +1,17 @@
-import exitHook from 'exit-hook'
 import type * as puppeteer from 'puppeteer'
 
 import * as browserGlobal from './browserGlobal.js'
 import * as config from './config.js'
 import * as parsers from './parsers.js'
-import type * as types from './types.js'
-
-export function setHeadless(headlessStatus: boolean): void {
-  browserGlobal.setHeadless(headlessStatus)
-}
+import type {
+  WSIBClearance_Certificate,
+  WSIBClearance_Failure,
+  WSIBClearance_Success
+} from './types.js'
 
 function cleanRawCertificateOutput(
   rawOutput: Record<string, unknown>
-): types.WSIBClearance_Certificate {
+): WSIBClearance_Certificate {
   const contractorLegalTradeName = parsers.stripHTML(
     rawOutput[config.certificateField_contractorLegalTradeName] as string
   )
@@ -46,17 +45,22 @@ function cleanRawCertificateOutput(
     contractorAddress,
     contractorNAICSCodes,
     clearanceCertificateNumber,
-    validityPeriodStart: validityPeriod.start,
-    validityPeriodEnd: validityPeriod.end,
+    validityPeriodStart: validityPeriod.start as Date,
+    validityPeriodEnd: validityPeriod.end as Date,
     principalLegalTradeName,
     principalAddress
   }
 }
 
+/**
+ * Retrieves a WSIB clearance certificate from the WSIB website.
+ * @param {string} accountNumber - The WSIB account number
+ * @returns {Promise<WSIBClearance_Failure | WSIBClearance_Success>} - The WSIB clearance certificate data.
+ */
 export async function getClearanceByAccountNumber(
   accountNumber: string
-): Promise<types.WSIBClearance_Failure | types.WSIBClearance_Success> {
-  let page: puppeteer.Page
+): Promise<WSIBClearance_Failure | WSIBClearance_Success> {
+  let page: puppeteer.Page | undefined
 
   try {
     const browser = await browserGlobal.getBrowserGlobal()
@@ -77,8 +81,8 @@ export async function getClearanceByAccountNumber(
       waitUntil: 'domcontentloaded'
     })
 
-    if (!pageResponse.ok) {
-      throw new Error('Response Code = ' + pageResponse.status().toString())
+    if (!(pageResponse?.ok() ?? false)) {
+      throw new Error(`Response Code = ${pageResponse?.status().toString()}`)
     }
 
     browserGlobal.keepBrowserGlobalAlive()
@@ -131,7 +135,7 @@ export async function getClearanceByAccountNumber(
           throw new Error(config.clearanceResult_defaultErrorMessage)
         })
 
-      throw new Error(errorMessage)
+      throw new Error(errorMessage ?? '')
     }
 
     browserGlobal.keepBrowserGlobalAlive()
@@ -143,7 +147,7 @@ export async function getClearanceByAccountNumber(
     const parsedTable = await page.$eval(
       config.certificate_tableSelector,
       (tableElement: HTMLTableElement) => {
-        const parsedTable_value = {}
+        const parsedTableValue = {}
 
         const thElements: NodeListOf<HTMLTableCellElement> =
           tableElement.querySelectorAll('thead tr th')
@@ -151,16 +155,17 @@ export async function getClearanceByAccountNumber(
           tableElement.querySelectorAll('tbody tr td')
 
         for (const [index, thElement] of thElements.entries()) {
-          parsedTable_value[thElement.textContent] = tdElements[index].innerHTML
+          parsedTableValue[thElement.textContent ?? ''] =
+            tdElements[index].innerHTML
         }
 
-        return parsedTable_value
+        return parsedTableValue
       }
     )
 
     const certificate = cleanRawCertificateOutput(parsedTable)
 
-    const response = Object.assign(
+    return Object.assign(
       {
         success: true,
         accountNumber
@@ -170,13 +175,11 @@ export async function getClearanceByAccountNumber(
         certificateURL
       }
     )
-
-    return response
   } catch (error) {
-    let errorURL: string
+    let errorURL: string = ''
 
     try {
-      errorURL = page.url()
+      errorURL = page?.url() ?? ''
     } catch {
       // ignore
     }
@@ -184,22 +187,25 @@ export async function getClearanceByAccountNumber(
     return {
       success: false,
       accountNumber,
-      error: error,
+      error,
       errorURL
     }
   } finally {
     try {
-      await page.close()
+      if (page !== undefined) {
+        await page.close()
+      }
     } catch {
       // ignore
     }
   }
 }
 
+/**
+ * Closes the cached web browser.
+ */
 export async function cleanUpBrowser(): Promise<void> {
   await browserGlobal.cleanUpBrowserGlobal(true)
 }
 
 export default getClearanceByAccountNumber
-
-exitHook(cleanUpBrowser)

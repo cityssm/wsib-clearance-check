@@ -1,17 +1,11 @@
+import puppeteerLaunch from '@cityssm/puppeteer-launch'
+import exitHook from 'exit-hook'
 import type { Browser } from 'puppeteer'
-import puppeteer from 'puppeteer'
-import { clearIntervalAsync } from 'set-interval-async'
-import { setIntervalAsync } from 'set-interval-async/dynamic'
-
-/*
- * Headless Debug Setting
- */
-
-let headless = true
-
-export const setHeadless = (headlessStatus: boolean): void => {
-  headless = headlessStatus
-}
+import {
+  type SetIntervalAsyncTimer,
+  clearIntervalAsync,
+  setIntervalAsync
+} from 'set-interval-async/dynamic'
 
 /*
  * Browser Global
@@ -25,7 +19,7 @@ const browserGlobalExpiryMillis =
 
 let browserGlobal: Browser | undefined
 let browserGlobalInitializedTime = 0
-let browserGlobalTimer
+let browserGlobalTimer: SetIntervalAsyncTimer<unknown[]> | undefined
 
 function isBrowserGlobalReady(): boolean {
   return Boolean(
@@ -40,11 +34,7 @@ export async function getBrowserGlobal(): Promise<Browser> {
 
     keepBrowserGlobalAlive()
 
-    browserGlobal = await puppeteer.launch({
-      headless: headless ? 'new' : false,
-      timeout: browserStartupTimeoutMillis,
-      args: ['--lang-en-CA,en']
-    })
+    browserGlobal = await puppeteerLaunch()
 
     keepBrowserGlobalAlive()
 
@@ -68,7 +58,7 @@ export async function cleanUpBrowserGlobal(useForce = false): Promise<void> {
 
   if (!isBrowserGlobalReady()) {
     try {
-      await browserGlobal.close()
+      await browserGlobal?.close()
     } catch {
       // ignore
     }
@@ -88,3 +78,7 @@ export async function cleanUpBrowserGlobal(useForce = false): Promise<void> {
     browserGlobalInitializedTime = 0
   }
 }
+
+exitHook(() => {
+  void cleanUpBrowserGlobal(true)
+})

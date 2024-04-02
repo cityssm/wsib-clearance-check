@@ -1,6 +1,6 @@
-import { getClearanceByAccountNumber, cleanUpBrowser } from './index.js'
+import { cleanUpBrowser, getClearanceByAccountNumber } from './index.js'
 
-const cli = async () => {
+async function cli(): Promise<void> {
   const accountNumbers = process.argv[2].split(',')
 
   for (const accountNumber of accountNumbers) {
@@ -11,4 +11,4 @@ const cli = async () => {
   await cleanUpBrowser()
 }
 
-cli()
+await cli()

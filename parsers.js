@@ -24,7 +24,7 @@ export const parseNAICS = (rawHTMLString) => {
                     .trim()
             };
             const classification = getWSIBClassificationFromNAICSCode(naicsCode.code);
-            if (classification) {
+            if (classification !== undefined) {
                 Object.assign(naicsCode, classification);
             }
             naicsCodes.push(naicsCode);

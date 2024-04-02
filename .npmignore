@@ -5,7 +5,6 @@ coverage
 node_modules
 test
 
-.atomignore
 .codeclimate.yml
 .eslintignore
 .eslintrc.json
@@ -13,7 +12,6 @@ test
 .npmignore
 .prettierignore
 .prettierrc.json
-appveyor.yml
 cli.d.ts
 cli.js
 cli.ts
