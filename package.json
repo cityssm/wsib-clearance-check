@@ -28,15 +28,14 @@
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 20000"
   },
   "dependencies": {
-    "@cityssm/puppeteer-launch": "^0.1.0",
+    "@cityssm/puppeteer-launch": "^0.2.0",
     "exit-hook": "^4.0.0",
     "htmlparser2": "^9.1.0",
-    "puppeteer": "^22.6.2",
     "set-interval-async": "^3.0.3"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
-    "eslint-config-cityssm": "^1.4.3"
+    "eslint-config-cityssm": "^1.5.0"
   },
   "engines": {
     "node": ">=18.0.0"

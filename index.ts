@@ -1,4 +1,4 @@
-import type * as puppeteer from 'puppeteer'
+import type { puppeteer } from '@cityssm/puppeteer-launch'
 
 import * as browserGlobal from './browserGlobal.js'
 import * as config from './config.js'
