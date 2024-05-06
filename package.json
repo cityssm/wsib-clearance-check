@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
-    "eslint-config-cityssm": "^1.5.0"
+    "eslint-config-cityssm": "^2.0.1"
   },
   "engines": {
     "node": ">=18.0.0"
