@@ -1,14 +1,14 @@
 import { parseDocument } from 'htmlparser2';
 import { getWSIBClassificationFromNAICSCode } from './wsibClassifications.js';
-export const stripHTML = (rawHTMLString) => {
+export function stripHTML(rawHTMLString) {
     const cleanString = (rawHTMLString ?? '').trim();
     if (cleanString.startsWith('<')) {
         const rawNode = parseDocument(cleanString);
         return rawNode.firstChild.children[0].data;
     }
     return cleanString;
-};
-export const parseNAICS = (rawHTMLString) => {
+}
+export function parseNAICS(rawHTMLString) {
     const naicsCodes = [];
     const rawNode = parseDocument(rawHTMLString.trim());
     for (const child of rawNode.childNodes) {
@@ -31,7 +31,7 @@ export const parseNAICS = (rawHTMLString) => {
         }
     }
     return naicsCodes;
-};
+}
 const validityPeriodDateRegexp = /^\d+-[A-Z][a-z]{2}-\d{4}$/;
 const validityPeriodMonthStrings = [
     'Jan',
@@ -47,11 +47,11 @@ const validityPeriodMonthStrings = [
     'Nov',
     'Dec'
 ];
-const parseValidityPeriodDate = (rawDateString) => {
+function parseValidityPeriodDate(rawDateString) {
     const datePieces = rawDateString.split('-');
     return new Date(Number.parseInt(datePieces[2], 10), validityPeriodMonthStrings.indexOf(datePieces[1]), Number.parseInt(datePieces[0], 10));
-};
-export const parseValidityPeriod = (rawHTMLString) => {
+}
+export function parseValidityPeriod(rawHTMLString) {
     const validityPeriod = {};
     const validityPeriodSplit = rawHTMLString.split(' ');
     for (const validityPeriodPiece of validityPeriodSplit) {
@@ -71,4 +71,4 @@ export const parseValidityPeriod = (rawHTMLString) => {
         }
     }
     return validityPeriod;
-};
+}

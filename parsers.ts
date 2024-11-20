@@ -8,7 +8,7 @@ interface ParseValidityPeriodReturn {
   end?: Date
 }
 
-export const stripHTML = (rawHTMLString: string): string => {
+export function stripHTML(rawHTMLString: string): string {
   const cleanString = (rawHTMLString ?? '').trim()
 
   if (cleanString.startsWith('<')) {
@@ -21,7 +21,7 @@ export const stripHTML = (rawHTMLString: string): string => {
   return cleanString
 }
 
-export const parseNAICS = (rawHTMLString: string): NAICSCode[] => {
+export function parseNAICS(rawHTMLString: string): NAICSCode[] {
   const naicsCodes: NAICSCode[] = []
 
   const rawNode = parseDocument(rawHTMLString.trim())
@@ -73,7 +73,7 @@ const validityPeriodMonthStrings = [
   'Dec'
 ]
 
-const parseValidityPeriodDate = (rawDateString: string): Date => {
+function parseValidityPeriodDate(rawDateString: string): Date {
   const datePieces = rawDateString.split('-')
 
   return new Date(
@@ -83,9 +83,7 @@ const parseValidityPeriodDate = (rawDateString: string): Date => {
   )
 }
 
-export const parseValidityPeriod = (
-  rawHTMLString: string
-): ParseValidityPeriodReturn => {
+export function parseValidityPeriod(rawHTMLString: string): ParseValidityPeriodReturn {
   const validityPeriod: ParseValidityPeriodReturn = {}
 
   const validityPeriodSplit = rawHTMLString.split(' ')

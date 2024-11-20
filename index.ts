@@ -54,8 +54,8 @@ function cleanRawCertificateOutput(
 
 /**
  * Retrieves a WSIB clearance certificate from the WSIB website.
- * @param {string} accountNumber - The WSIB account number
- * @returns {Promise<WSIBClearance_Failure | WSIBClearance_Success>} - The WSIB clearance certificate data.
+ * @param accountNumber - The WSIB account number
+ * @returns The WSIB clearance certificate data.
  */
 export async function getClearanceByAccountNumber(
   accountNumber: string
@@ -125,11 +125,9 @@ export async function getClearanceByAccountNumber(
       const errorMessage = await page
         .$eval(
           config.clearanceResult_certificateBadStandingSelector,
-          (badStandingElement: HTMLElement) => {
-            return badStandingElement
+          (badStandingElement: HTMLElement) => badStandingElement
               ? badStandingElement.textContent
               : config.clearanceResult_defaultErrorMessage
-          }
         )
         .catch(() => {
           throw new Error(config.clearanceResult_defaultErrorMessage)
@@ -165,16 +163,12 @@ export async function getClearanceByAccountNumber(
 
     const certificate = cleanRawCertificateOutput(parsedTable)
 
-    return Object.assign(
-      {
-        success: true,
-        accountNumber
-      },
-      certificate,
-      {
-        certificateURL
-      }
-    )
+    return {
+      success: true,
+      accountNumber,
+      ...certificate,
+      certificateURL
+    }
   } catch (error) {
     let errorURL = ''
 

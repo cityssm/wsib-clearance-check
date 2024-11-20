@@ -22,10 +22,10 @@ jobs:
       - name: Install Application
         run: |
           npm ci
-          npm install -g mocha c8
+          npm install -g c8
 
       - name: Run Coverage Testing
-        run: c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
+        run: npm run coverage
 
       - name: Code Climate
         if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' }}

@@ -22,16 +22,23 @@ function cleanRawCertificateOutput(rawOutput) {
         principalAddress
     };
 }
+/**
+ * Retrieves a WSIB clearance certificate from the WSIB website.
+ * @param accountNumber - The WSIB account number
+ * @returns The WSIB clearance certificate data.
+ */
 export async function getClearanceByAccountNumber(accountNumber) {
     let page;
     try {
         const browser = await browserGlobal.getBrowserGlobal();
         page = await browser.newPage();
+        // Set up page options
         page.setDefaultNavigationTimeout(browserGlobal.pageTimeoutMillis);
         page.setDefaultTimeout(browserGlobal.pageTimeoutMillis);
         await page.setExtraHTTPHeaders({
             'Accept-Language': 'en'
         });
+        // Load eservice
         const pageResponse = await page.goto(config.clearanceStart_url, {
             referer: 'https://www.wsib.ca/en',
             waitUntil: 'domcontentloaded'
@@ -41,6 +48,7 @@ export async function getClearanceByAccountNumber(accountNumber) {
         }
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector('body');
+        // Fill out form
         await page.$eval(config.clearanceStart_searchFieldSelector, (inputElement, accountNumberValue) => {
             inputElement.value = accountNumberValue;
         }, accountNumber);
@@ -49,6 +57,7 @@ export async function getClearanceByAccountNumber(accountNumber) {
         });
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector('body');
+        // Find result link
         let hasError = false;
         await page
             .$eval(config.clearanceResult_certificateLinkSelector, (linkElement) => {
@@ -59,11 +68,9 @@ export async function getClearanceByAccountNumber(accountNumber) {
         });
         if (hasError) {
             const errorMessage = await page
-                .$eval(config.clearanceResult_certificateBadStandingSelector, (badStandingElement) => {
-                return badStandingElement
-                    ? badStandingElement.textContent
-                    : config.clearanceResult_defaultErrorMessage;
-            })
+                .$eval(config.clearanceResult_certificateBadStandingSelector, (badStandingElement) => badStandingElement
+                ? badStandingElement.textContent
+                : config.clearanceResult_defaultErrorMessage)
                 .catch(() => {
                 throw new Error(config.clearanceResult_defaultErrorMessage);
             });
@@ -71,6 +78,7 @@ export async function getClearanceByAccountNumber(accountNumber) {
         }
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector('body');
+        // Parse the certificate
         const certificateURL = page.url();
         const parsedTable = await page.$eval(config.certificate_tableSelector, (tableElement) => {
             const parsedTableValue = {};
@@ -83,12 +91,12 @@ export async function getClearanceByAccountNumber(accountNumber) {
             return parsedTableValue;
         });
         const certificate = cleanRawCertificateOutput(parsedTable);
-        return Object.assign({
+        return {
             success: true,
-            accountNumber
-        }, certificate, {
+            accountNumber,
+            ...certificate,
             certificateURL
-        });
+        };
     }
     catch (error) {
         let errorURL = '';
@@ -96,6 +104,7 @@ export async function getClearanceByAccountNumber(accountNumber) {
             errorURL = page?.url() ?? '';
         }
         catch {
+            // ignore
         }
         return {
             success: false,
@@ -111,9 +120,13 @@ export async function getClearanceByAccountNumber(accountNumber) {
             }
         }
         catch {
+            // ignore
         }
     }
 }
+/**
+ * Closes the cached web browser.
+ */
 export async function cleanUpBrowser() {
     await browserGlobal.cleanUpBrowserGlobal(true);
 }

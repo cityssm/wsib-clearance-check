@@ -3,7 +3,7 @@ interface ParseValidityPeriodReturn {
     start?: Date;
     end?: Date;
 }
-export declare const stripHTML: (rawHTMLString: string) => string;
-export declare const parseNAICS: (rawHTMLString: string) => NAICSCode[];
-export declare const parseValidityPeriod: (rawHTMLString: string) => ParseValidityPeriodReturn;
+export declare function stripHTML(rawHTMLString: string): string;
+export declare function parseNAICS(rawHTMLString: string): NAICSCode[];
+export declare function parseValidityPeriod(rawHTMLString: string): ParseValidityPeriodReturn;
 export {};

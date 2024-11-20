@@ -1,6 +1,9 @@
 import puppeteerLaunch from '@cityssm/puppeteer-launch';
 import exitHook from 'exit-hook';
 import { clearIntervalAsync, setIntervalAsync } from 'set-interval-async/dynamic';
+/*
+ * Browser Global
+ */
 export const pageTimeoutMillis = 90_000;
 const browserStartupTimeoutMillis = 3 * 60_000;
 const browserGlobalExpiryMillis = Math.max(browserStartupTimeoutMillis, pageTimeoutMillis) + 10_000;
@@ -33,6 +36,7 @@ export async function cleanUpBrowserGlobal(useForce = false) {
             await browserGlobal?.close();
         }
         catch {
+            // ignore
         }
         browserGlobal = undefined;
         if (browserGlobalTimer) {
@@ -40,6 +44,7 @@ export async function cleanUpBrowserGlobal(useForce = false) {
                 await clearIntervalAsync(browserGlobalTimer);
             }
             catch {
+                // ignore
             }
             browserGlobalTimer = undefined;
         }

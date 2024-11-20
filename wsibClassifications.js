@@ -1,3 +1,6 @@
+/*
+ * https://www.wsib.ca/en/operational-policy-manual/classification-structure
+ */
 const wsibClassesA = {
     className: 'AGRICULTURE',
     naicsPrefixes: ['11', '001010']
@@ -188,6 +191,9 @@ const wsibClasses = {
     P: wsibClassesP
 };
 Object.freeze(wsibClasses);
+/*
+ * Classification Helper
+ */
 function hasNAICSCodeMatch(naicsCode, naicsPrefixes) {
     for (const naicsPrefix of naicsPrefixes) {
         if (naicsCode.startsWith(naicsPrefix)) {

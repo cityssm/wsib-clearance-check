@@ -24,18 +24,19 @@
   "exports": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "test": "mocha --timeout 20000",
-    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 20000"
+    "test": "node --test",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
   },
   "dependencies": {
-    "@cityssm/puppeteer-launch": "^0.2.0",
+    "@cityssm/puppeteer-launch": "^3.1.0",
     "exit-hook": "^4.0.0",
     "htmlparser2": "^9.1.0",
     "set-interval-async": "^3.0.3"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "eslint-config-cityssm": "^1.5.0"
+    "@types/node": "^22.9.1",
+    "eslint-config-cityssm": "^15.2.0",
+    "prettier-config-cityssm": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
