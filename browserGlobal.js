@@ -39,7 +39,7 @@ export async function cleanUpBrowserGlobal(useForce = false) {
             // ignore
         }
         browserGlobal = undefined;
-        if (browserGlobalTimer) {
+        if (browserGlobalTimer !== undefined) {
             try {
                 await clearIntervalAsync(browserGlobalTimer);
             }

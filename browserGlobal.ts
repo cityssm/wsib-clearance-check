@@ -65,7 +65,7 @@ export async function cleanUpBrowserGlobal(useForce = false): Promise<void> {
 
     browserGlobal = undefined
 
-    if (browserGlobalTimer) {
+    if (browserGlobalTimer !== undefined) {
       try {
         await clearIntervalAsync(browserGlobalTimer)
       } catch {
