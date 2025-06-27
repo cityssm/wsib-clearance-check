@@ -1,6 +1,9 @@
 .git
 .github
 .nyc_output
+.sonarlint
+.vscode
+
 coverage
 node_modules
 test

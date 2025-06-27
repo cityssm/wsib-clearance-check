@@ -22,9 +22,9 @@ let browserGlobalInitializedTime = 0
 let browserGlobalTimer: SetIntervalAsyncTimer<unknown[]> | undefined
 
 function isBrowserGlobalReady(): boolean {
-  return Boolean(
+  return (
     browserGlobal !== undefined &&
-      browserGlobalInitializedTime + browserGlobalExpiryMillis > Date.now()
+    browserGlobalInitializedTime + browserGlobalExpiryMillis > Date.now()
   )
 }
 

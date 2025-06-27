@@ -5,6 +5,8 @@ async function cli(): Promise<void> {
 
   for (const accountNumber of accountNumbers) {
     const results = await getClearanceByAccountNumber(accountNumber)
+
+    // eslint-disable-next-line no-console
     console.log(results)
   }
 

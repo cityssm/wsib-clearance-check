@@ -4,7 +4,8 @@ import eslintConfigCityssm, {
   tseslint
 } from 'eslint-config-cityssm'
 
-const config = tseslint.config(...eslintConfigCityssm, {
+const config = tseslint.config(eslintConfigCityssm, {
+  files: ['**/*.ts'],
   rules: {
     '@cspell/spellchecker': [
       'warn',

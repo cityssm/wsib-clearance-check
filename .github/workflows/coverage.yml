@@ -8,7 +8,6 @@ jobs:
   Coverage:
     runs-on: ubuntu-20.04
     env:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
       
@@ -26,14 +25,6 @@ jobs:
 
       - name: Run Coverage Testing
         run: npm run coverage
-
-      - name: Code Climate
-        if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' }}
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
-          chmod +x codeclimate-test-reporter
-          ./codeclimate-test-reporter before-build
-          ./codeclimate-test-reporter after-build -t lcov --exit-code $?
 
       - name: Codecov
         if: ${{ github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' }}

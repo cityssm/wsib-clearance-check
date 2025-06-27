@@ -11,7 +11,7 @@ let browserGlobal;
 let browserGlobalInitializedTime = 0;
 let browserGlobalTimer;
 function isBrowserGlobalReady() {
-    return Boolean(browserGlobal !== undefined &&
+    return (browserGlobal !== undefined &&
         browserGlobalInitializedTime + browserGlobalExpiryMillis > Date.now());
 }
 export async function getBrowserGlobal() {
