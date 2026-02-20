@@ -1,10 +1,9 @@
 import eslintConfigCityssm, {
-  type Config,
-  cspellWords,
-  tseslint
-} from 'eslint-config-cityssm'
+  defineConfig
+} from 'eslint-config-cityssm/eslint.packageConfig.js'
+import { cspellWords } from 'eslint-config-cityssm/exports.js'
 
-const config = tseslint.config(eslintConfigCityssm, {
+const config = defineConfig(eslintConfigCityssm, {
   files: ['**/*.ts'],
   rules: {
     '@cspell/spellchecker': [
@@ -16,6 +15,6 @@ const config = tseslint.config(eslintConfigCityssm, {
       }
     ]
   }
-}) as Config
+})
 
 export default config

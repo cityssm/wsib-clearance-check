@@ -28,15 +28,15 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@cityssm/puppeteer-launch": "^4.0.0",
-    "exit-hook": "^4.0.0",
-    "htmlparser2": "^10.0.0",
+    "@cityssm/puppeteer-launch": "^6.0.0",
+    "exit-hook": "^5.1.0",
+    "htmlparser2": "^10.1.0",
     "set-interval-async": "^3.0.3"
   },
   "devDependencies": {
-    "@types/node": "^24.0.4",
-    "eslint-config-cityssm": "^25.0.0",
-    "prettier-config-cityssm": "^1.0.0"
+    "@types/node": "^25.3.0",
+    "eslint-config-cityssm": "^38.2.1",
+    "prettier-config-cityssm": "^2.1.1"
   },
   "engines": {
     "node": ">=18.0.0"
