@@ -21,8 +21,13 @@ jobs:
       - name: Install Application
         run: npm ci --ignore-scripts
 
-      - name: Install globals
+      - name: Install Globals
         run: npm install -g c8 puppeteer
+
+      - name: Install browsers
+        run: |
+          puppeteer install chrome
+          puppeteer install firefox
 
       - name: Run Coverage Testing
         run: npm run coverage
