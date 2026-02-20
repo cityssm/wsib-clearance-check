@@ -9,6 +9,10 @@ import type {
   WSIBClearance_Success
 } from './types.js'
 
+async function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 function cleanRawCertificateOutput(
   rawOutput: Record<string, unknown>
 ): WSIBClearance_Certificate {
@@ -87,6 +91,7 @@ export async function getClearanceByAccountNumber(
 
     browserGlobal.keepBrowserGlobalAlive()
     await page.waitForSelector('body')
+    await page.waitForSelector(config.clearanceStart_searchFieldSelector)
 
     // Fill out form
     await page.$eval(
@@ -104,8 +109,12 @@ export async function getClearanceByAccountNumber(
       }
     )
 
+    // Wait for results to load
+    await wait(500)
+
     browserGlobal.keepBrowserGlobalAlive()
     await page.waitForSelector('body')
+    await page.waitForNetworkIdle()
 
     // Find result link
     let hasError = false
@@ -114,6 +123,7 @@ export async function getClearanceByAccountNumber(
       .$eval(
         config.clearanceResult_certificateLinkSelector,
         (linkElement: HTMLAnchorElement) => {
+          linkElement.scrollIntoView()
           linkElement.click()
         }
       )
@@ -125,7 +135,8 @@ export async function getClearanceByAccountNumber(
       const errorMessage = await page
         .$eval(
           config.clearanceResult_certificateBadStandingSelector,
-          (badStandingElement: HTMLElement) => badStandingElement
+          (badStandingElement: HTMLElement) =>
+            badStandingElement
               ? badStandingElement.textContent
               : config.clearanceResult_defaultErrorMessage
         )
@@ -136,8 +147,11 @@ export async function getClearanceByAccountNumber(
       throw new Error(errorMessage ?? '')
     }
 
+    await wait(500)
+
     browserGlobal.keepBrowserGlobalAlive()
     await page.waitForSelector('body')
+    await page.waitForNetworkIdle()
 
     // Parse the certificate
     const certificateURL = page.url()

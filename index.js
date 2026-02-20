@@ -1,6 +1,9 @@
 import * as browserGlobal from './browserGlobal.js';
 import * as config from './config.js';
 import * as parsers from './parsers.js';
+async function wait(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 function cleanRawCertificateOutput(rawOutput) {
     const contractorLegalTradeName = parsers.stripHTML(rawOutput[config.certificateField_contractorLegalTradeName]);
     const contractorAddress = parsers.stripHTML(rawOutput[config.certificateField_contractorAddress]);
@@ -48,6 +51,7 @@ export async function getClearanceByAccountNumber(accountNumber) {
         }
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector('body');
+        await page.waitForSelector(config.clearanceStart_searchFieldSelector);
         // Fill out form
         await page.$eval(config.clearanceStart_searchFieldSelector, (inputElement, accountNumberValue) => {
             inputElement.value = accountNumberValue;
@@ -55,12 +59,16 @@ export async function getClearanceByAccountNumber(accountNumber) {
         await page.$eval(config.clearanceStart_searchFormSelector, (formElement) => {
             formElement.submit();
         });
+        // Wait for results to load
+        await wait(500);
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector('body');
+        await page.waitForNetworkIdle();
         // Find result link
         let hasError = false;
         await page
             .$eval(config.clearanceResult_certificateLinkSelector, (linkElement) => {
+            linkElement.scrollIntoView();
             linkElement.click();
         })
             .catch(() => {
@@ -76,8 +84,10 @@ export async function getClearanceByAccountNumber(accountNumber) {
             });
             throw new Error(errorMessage ?? '');
         }
+        await wait(500);
         browserGlobal.keepBrowserGlobalAlive();
         await page.waitForSelector('body');
+        await page.waitForNetworkIdle();
         // Parse the certificate
         const certificateURL = page.url();
         const parsedTable = await page.$eval(config.certificate_tableSelector, (tableElement) => {

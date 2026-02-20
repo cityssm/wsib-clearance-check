@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker, @typescript-eslint/naming-convention, no-secrets/no-secrets */
 // Search Form
 export const clearanceStart_url = 'https://clearances.wsib.ca/Clearances/eclearance/start';
