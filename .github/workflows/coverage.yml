@@ -21,8 +21,11 @@ jobs:
       - name: Install Application
         run: npm ci --ignore-scripts
 
-      - name: Install Puppeteer browser
-        run: npx puppeteer install chrome@stable
+      - name: Install Puppeteer Chrome browser
+        run: npx puppeteer install chrome
+
+      - name: Install Puppeteer Firefox browser
+        run: npx puppeteer install firefox
 
       - name: Install c8
         run: npm install -g c8
