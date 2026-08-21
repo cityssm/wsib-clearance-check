@@ -1,17 +1,21 @@
 import assert from 'node:assert';
 import { after, before, describe, it } from 'node:test';
+import Debug from 'debug';
+import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js';
 import * as wsib from '../index.js';
 import { getWSIBClassificationFromNAICSCode } from '../wsibClassifications.js';
+Debug.enable(DEBUG_ENABLE_NAMESPACES);
+const debug = Debug(`${DEBUG_NAMESPACE}:test`);
 await describe('getClearanceByAccountNumber(validAccountNumber)', async () => {
     let certificate;
     const accountNumber = '9001832';
     before(async () => {
         try {
             certificate = (await wsib.getClearanceByAccountNumber(accountNumber));
-            console.log(certificate);
+            debug(certificate);
         }
         catch (error) {
-            console.log(error);
+            debug(error);
             assert.fail();
         }
     });
@@ -34,16 +38,15 @@ await describe('getClearanceByAccountNumber(validAccountNumber)', async () => {
         assert.strictEqual(certificate.validityPeriodEnd.constructor, Date);
     });
 });
-// eslint-disable-next-line no-secrets/no-secrets
 await describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => {
     let certificate;
     before(async () => {
         try {
             certificate = (await wsib.getClearanceByAccountNumber('1'));
-            console.log(certificate);
+            debug(certificate);
         }
         catch (error) {
-            console.log(error);
+            debug(error);
             assert.fail();
         }
     });
@@ -54,7 +57,6 @@ await describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => 
         assert.strictEqual(certificate.success, false);
     });
 });
-// eslint-disable-next-line no-secrets/no-secrets
 await describe('getWSIBClassificationFromNAICSCode', async () => {
     await it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", () => {
         try {
@@ -62,7 +64,7 @@ await describe('getWSIBClassificationFromNAICSCode', async () => {
             assert.strictEqual(result?.subclassName, 'Hospitals');
         }
         catch (error) {
-            console.log(error);
+            debug(error);
             assert.fail();
         }
     });

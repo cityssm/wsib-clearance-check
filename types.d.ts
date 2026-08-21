@@ -1,24 +1,24 @@
-export type WSIBClearance_Failure = WSIBClearance_AccountNumber & {
+export type WSIBClearanceCertificateFailure = WSIBClearanceAccountNumber & {
     success: false;
     errorURL?: string;
-    error?: Error;
+    error?: unknown;
 };
-export type WSIBClearance_Success = WSIBClearance_AccountNumber & WSIBClearance_Certificate & {
+export type WSIBClearanceCertificateSuccess = WSIBClearanceAccountNumber & WSIBClearanceCertificate & {
     success: true;
     certificateURL: string;
 };
-interface WSIBClearance_AccountNumber {
+interface WSIBClearanceAccountNumber {
     accountNumber: string;
 }
-export interface WSIBClearance_Certificate {
+export interface WSIBClearanceCertificate {
+    clearanceCertificateNumber: string;
     contractorLegalTradeName: string;
     contractorAddress: string;
     contractorNAICSCodes: NAICSCode[];
-    clearanceCertificateNumber: string;
-    validityPeriodStart: Date;
     validityPeriodEnd: Date;
-    principalLegalTradeName: string;
+    validityPeriodStart: Date;
     principalAddress: string;
+    principalLegalTradeName: string;
 }
 export interface NAICSCode {
     code: string;

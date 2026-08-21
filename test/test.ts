@@ -1,22 +1,29 @@
 import assert from 'node:assert'
 import { after, before, describe, it } from 'node:test'
 
+import Debug from 'debug'
+
+import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js'
 import * as wsib from '../index.js'
-import type { WSIBClearance_Failure, WSIBClearance_Success } from '../types.js'
+import type { WSIBClearanceCertificateFailure, WSIBClearanceCertificateSuccess } from '../types.js'
 import { getWSIBClassificationFromNAICSCode } from '../wsibClassifications.js'
 
+Debug.enable(DEBUG_ENABLE_NAMESPACES)
+
+const debug = Debug(`${DEBUG_NAMESPACE}:test`)
+
 await describe('getClearanceByAccountNumber(validAccountNumber)', async () => {
-  let certificate: WSIBClearance_Success
+  let certificate: WSIBClearanceCertificateSuccess
   const accountNumber = '9001832'
 
   before(async () => {
     try {
       certificate = (await wsib.getClearanceByAccountNumber(
         accountNumber
-      )) as WSIBClearance_Success
-      console.log(certificate)
+      )) as WSIBClearanceCertificateSuccess
+      debug(certificate)
     } catch (error) {
-      console.log(error)
+      debug(error)
       assert.fail()
     }
   })
@@ -46,18 +53,17 @@ await describe('getClearanceByAccountNumber(validAccountNumber)', async () => {
   })
 })
 
-// eslint-disable-next-line no-secrets/no-secrets
 await describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => {
-  let certificate: WSIBClearance_Failure
+  let certificate: WSIBClearanceCertificateFailure
 
   before(async () => {
     try {
       certificate = (await wsib.getClearanceByAccountNumber(
         '1'
-      )) as WSIBClearance_Failure
-      console.log(certificate)
+      )) as WSIBClearanceCertificateFailure
+      debug(certificate)
     } catch (error) {
-      console.log(error)
+      debug(error)
       assert.fail()
     }
   })
@@ -71,14 +77,13 @@ await describe('getClearanceByAccountNumber(invalidAccountNumber)', async () => 
   })
 })
 
-// eslint-disable-next-line no-secrets/no-secrets
 await describe('getWSIBClassificationFromNAICSCode', async () => {
   await it("Returns { subclassName: 'Hospitals' } on naicsCode = '622000'", () => {
     try {
       const result = getWSIBClassificationFromNAICSCode('622000')
       assert.strictEqual(result?.subclassName, 'Hospitals')
     } catch (error) {
-      console.log(error)
+      debug(error)
       assert.fail()
     }
   })

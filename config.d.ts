@@ -1,3 +1,4 @@
+export declare const pageTimeoutMillis = 90000;
 export declare const clearanceStart_url = "https://clearances.wsib.ca/Clearances/eclearance/start";
 export declare const clearanceStart_searchFormSelector = "#TOKENSimpleSearchForm";
 export declare const clearanceStart_searchFieldSelector = "#simpleAccountNumbersTOKEN";

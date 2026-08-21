@@ -1,4 +1,6 @@
-/* eslint-disable @cspell/spellchecker, @typescript-eslint/naming-convention, no-secrets/no-secrets */
+/* eslint-disable @typescript-eslint/naming-convention */
+
+export const pageTimeoutMillis = 90_000
 
 // Search Form
 
