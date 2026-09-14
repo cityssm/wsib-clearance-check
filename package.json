@@ -40,7 +40,7 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@cityssm/puppeteer-launch": "^7.2.0",
+    "@cityssm/puppeteer-launch": "^8.0.0",
     "@cityssm/to-millis": "^1.0.1",
     "debug": "^4.4.3",
     "exit-hook": "^5.1.0",
